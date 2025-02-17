@@ -3849,7 +3849,7 @@ function Show-LoadingScreen {
                 </StackPanel>
                 <!-- Loading Text -->
                 <TextBlock 
-                    Text="ÕýÔÚ¼ÓÔØ£¬ÇëÉÔºò..."
+                    Text="æ­£åœ¨åŠ è½½ï¼Œè¯·ç¨å€™..."
                     FontSize="14"
                     FontStyle="Italic"
                     Margin="0,0,0,20"
@@ -4397,7 +4397,7 @@ function Initialize-AppTheme {
         Write-Log -Message "Using system theme. isDarkMode: $script:isDarkMode" -Severity "INFO"
     }
     
-    Write-Log -Message "Ó¦ÓÃ³õÊ¼Ö÷Ìâ" -Severity "INFO"
+    Write-Log -Message "åº”ç”¨åˆå§‹ä¸»é¢˜" -Severity "INFO"
     Switch-Theme -isDarkMode $script:isDarkMode
     Write-Log -Message "Theme initialization complete" -Severity "INFO"
 }
@@ -5025,7 +5025,7 @@ $AppInstallConfigs = @{
     }
     'InstallThorium'     = @{
         AppName      = 'Alex313031.Thorium'
-        FriendlyName = 'Thorium ä¯ÀÀÆ÷'
+        FriendlyName = 'Thorium æµè§ˆå™¨'
     }
     'InstallFirefox'     = @{
         AppName      = 'Mozilla.Firefox'
@@ -5114,7 +5114,7 @@ function Install-Store {
         $bloatRemovalPath = "$env:ProgramFiles\Winhance\Scripts\BloatRemoval.ps1"
 
         if (Test-Path $bloatRemovalPath) {
-            Write-Status "¸üÐÂÓ·Ö×Èí¼þÅäÖÃ..." -TargetScreen "SoftAppsScreen"
+            Write-Status "æ›´æ–°è‡ƒè‚¿è½¯ä»¶é…ç½®..." -TargetScreen "SoftAppsScreen"
             Update-WPFControls
 
             # Read content
@@ -5154,14 +5154,14 @@ function Install-Store {
         if (-not (Test-InternetConnection)) {
             Write-Status "No internet connection available." -TargetScreen "SoftAppsScreen"
             Write-Log "Microsoft Store installation failed: No internet connection available."
-            Show-MessageBox -Message "ÇëÁ¬½Óµ½»¥ÁªÍø²¢ÖØÊÔ¡£" -Title "ÎÞÍøÂçÁ¬½Ó" -Icon Warning -Buttons OK
+            Show-MessageBox -Message "è¯·è¿žæŽ¥åˆ°äº’è”ç½‘å¹¶é‡è¯•ã€‚" -Title "æ— ç½‘ç»œè¿žæŽ¥" -Icon Warning -Buttons OK
             return
         }
 
-        Write-Status "°²×° Microsoft Store..." -TargetScreen "SoftAppsScreen"
+        Write-Status "å®‰è£… Microsoft Store..." -TargetScreen "SoftAppsScreen"
         
         # Method 1: Try registering existing package
-        Write-Status "³¢ÊÔ·½·¨1£º°ü×¢²á..." -TargetScreen "SoftAppsScreen"
+        Write-Status "å°è¯•æ–¹æ³•1ï¼šåŒ…æ³¨å†Œ..." -TargetScreen "SoftAppsScreen"
         try {
             Get-AppxPackage -AllUsers Microsoft.WindowsStore* | ForEach-Object {
                 Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" -ErrorAction Stop
@@ -5170,9 +5170,9 @@ function Install-Store {
             # Check if successful
             $storePackage = Get-AppxPackage -Name "Microsoft.WindowsStore" | Where-Object { $_.Status -eq "Ok" }
             if ($null -ne $storePackage) {
-                Write-Status "Microsoft Store Í¨¹ý·½·¨1³É¹¦°²×°£¡" -TargetScreen "SoftAppsScreen"
+                Write-Status "Microsoft Store é€šè¿‡æ–¹æ³•1æˆåŠŸå®‰è£…ï¼" -TargetScreen "SoftAppsScreen"
                 Write-Log "Microsoft Store installed successfully via package registration. Version: $($storePackage.Version)"
-                Show-MessageBox -Message "Microsoft Store ÒÑ³É¹¦°²×°£¡`nVersion: $($storePackage.Version)" -Title "°²×°³É¹¦" -Icon Information
+                Show-MessageBox -Message "Microsoft Store å·²æˆåŠŸå®‰è£…ï¼`nVersion: $($storePackage.Version)" -Title "å®‰è£…æˆåŠŸ" -Icon Information
                 return
             }
         }
@@ -5181,10 +5181,10 @@ function Install-Store {
         }
 
         # Method 2: WSReset
-        Write-Status "³¢ÊÔ·½·¨2£ºWSReset..." -TargetScreen "SoftAppsScreen"
+        Write-Status "å°è¯•æ–¹æ³•2ï¼šWSReset..." -TargetScreen "SoftAppsScreen"
         try {
             wsreset -i
-            Write-Status "Microsoft Store°²×°ÒÑÆô¶¯¡£ÇëÉÔºò..." -TargetScreen "SoftAppsScreen"
+            Write-Status "Microsoft Storeå®‰è£…å·²å¯åŠ¨ã€‚è¯·ç¨å€™..." -TargetScreen "SoftAppsScreen"
             
             # Wait and check for Store installation
             for ($i = 0; $i -lt 10; $i++) {
@@ -5193,10 +5193,10 @@ function Install-Store {
                 if ($null -ne $storePackage) {
                     Write-Status "Microsoft Store installed successfully via Method 2!" -TargetScreen "SoftAppsScreen"
                     Write-Log "Microsoft Store installed successfully via WSReset. Version: $($storePackage.Version)"
-                    Show-MessageBox -Message "Microsoft Store ÒÑ³É¹¦°²×°£¡`nVersion: $($storePackage.Version)" -Title "°²×°³É¹¦" -Icon Information
+                    Show-MessageBox -Message "Microsoft Store å·²æˆåŠŸå®‰è£…ï¼`nVersion: $($storePackage.Version)" -Title "å®‰è£…æˆåŠŸ" -Icon Information
                     return
                 }
-                Write-Status "¼ì²é°²×°×´Ì¬... ³¢ÊÔ $($i + 1) of 10" -TargetScreen "SoftAppsScreen"
+                Write-Status "æ£€æŸ¥å®‰è£…çŠ¶æ€... å°è¯• $($i + 1) of 10" -TargetScreen "SoftAppsScreen"
             }
         }
         catch {
@@ -5204,25 +5204,25 @@ function Install-Store {
         }
 
         # Method 3: Xbox App Installation
-        $message = "Ö®Ç°°²×°Microsoft StoreµÄ·½·¨¾ùÎ´³É¹¦¡£`n`n" +
-        "ÄúÏë³¢ÊÔ°²×°XboxÓ¦ÓÃÂð£¿XboxÓ¦ÓÃ¿ÉÒÔ°ïÖú×÷ÎªÒÀÀµÏî»Ö¸´MicrosoftÉÌµê¡£`n`n" +
-        "ÄúÊÇ·ñÒª¼ÌÐø°²×°Xbox£¿"
+        $message = "ä¹‹å‰å®‰è£…Microsoft Storeçš„æ–¹æ³•å‡æœªæˆåŠŸã€‚`n`n" +
+        "æ‚¨æƒ³å°è¯•å®‰è£…Xboxåº”ç”¨å—ï¼ŸXboxåº”ç”¨å¯ä»¥å¸®åŠ©ä½œä¸ºä¾èµ–é¡¹æ¢å¤Microsoftå•†åº—ã€‚`n`n" +
+        "æ‚¨æ˜¯å¦è¦ç»§ç»­å®‰è£…Xboxï¼Ÿ"
         
-        $result = Show-MessageBox -Message $message -Title "³¢ÊÔÌæ´ú·½·¨£¿" -Icon Question -Buttons YesNo
+        $result = Show-MessageBox -Message $message -Title "å°è¯•æ›¿ä»£æ–¹æ³•ï¼Ÿ" -Icon Question -Buttons YesNo
 
         if ($result -eq 'Yes') {
-            Write-Status "³¢ÊÔ·½·¨3£º°²×°Xbox..." -TargetScreen "SoftAppsScreen"
+            Write-Status "å°è¯•æ–¹æ³•3ï¼šå®‰è£…Xbox..." -TargetScreen "SoftAppsScreen"
             Install-Xbox
         }
         else {
-            Write-Status "Microsoft Store°²×°ÒÑ±»ÓÃ»§È¡Ïû¡£" -TargetScreen "SoftAppsScreen"
+            Write-Status "Microsoft Storeå®‰è£…å·²è¢«ç”¨æˆ·å–æ¶ˆã€‚" -TargetScreen "SoftAppsScreen"
             Write-Log "User declined Xbox installation method for Microsoft Store"
         }
     }
     catch {
         Write-Log "Error during Microsoft Store installation: $($_.Exception.Message)" -Severity 'ERROR'
-        Write-Status "ÔÚ°²×°Microsoft StoreÊ±·¢Éú´íÎó¡£" -TargetScreen "SoftAppsScreen"
-        Show-MessageBox -Message "ÔÚ°²×°Microsoft StoreÊ±·¢Éú´íÎó¡£`n`n$($_.Exception.Message)" -Title "°²×°´íÎó" -Icon Error
+        Write-Status "åœ¨å®‰è£…Microsoft Storeæ—¶å‘ç”Ÿé”™è¯¯ã€‚" -TargetScreen "SoftAppsScreen"
+        Show-MessageBox -Message "åœ¨å®‰è£…Microsoft Storeæ—¶å‘ç”Ÿé”™è¯¯ã€‚`n`n$($_.Exception.Message)" -Title "å®‰è£…é”™è¯¯" -Icon Error
     }
 }
 
@@ -5235,17 +5235,17 @@ function Install-AppWithWinGet {
 
     # Check for internet connection
     if (-not (Test-InternetConnection)) {
-        Write-Status -Message "ÎÞ·¨°²×° $FriendlyName - Î´¼ì²âµ½»¥ÁªÍøÁ¬½Ó¡£ÇëÁ¬½Óµ½»¥ÁªÍø²¢ÖØÊÔ¡£" -TargetScreen "SoftAppsScreen"
+        Write-Status -Message "æ— æ³•å®‰è£… $FriendlyName - æœªæ£€æµ‹åˆ°äº’è”ç½‘è¿žæŽ¥ã€‚è¯·è¿žæŽ¥åˆ°äº’è”ç½‘å¹¶é‡è¯•ã€‚" -TargetScreen "SoftAppsScreen"
         Update-WPFControls
         return
     }
 
     # Update WinGet to ensure it's the latest version
-    Write-Status -Message "ÔÚ°²×° $FriendlyName Ö®Ç°¼ì²éWinGet×´Ì¬..." -TargetScreen "SoftAppsScreen"
+    Write-Status -Message "åœ¨å®‰è£… $FriendlyName ä¹‹å‰æ£€æŸ¥WinGetçŠ¶æ€..." -TargetScreen "SoftAppsScreen"
     Update-WPFControls
     Test-WinGetStatus
 
-    Write-Status -Message "¿ªÊ¼°²×° $FriendlyName..." -TargetScreen "SoftAppsScreen"
+    Write-Status -Message "å¼€å§‹å®‰è£… $FriendlyName..." -TargetScreen "SoftAppsScreen"
     Update-WPFControls
     
     # Capture the friendly name in a script-scoped variable to ensure availability in the timer
@@ -5332,7 +5332,7 @@ function Install-AppWithWinGet {
 # Function to install Microsoft Edge and Remove Winhance Removal script and scheduled task
 function Install-MicrosoftEdge {
     try {
-        Write-Status "ÏÂÔØMicrosoft Edge... ÇëÉÔºò¡£" -TargetScreen "SoftAppsScreen"
+        Write-Status "ä¸‹è½½Microsoft Edge... è¯·ç¨å€™ã€‚" -TargetScreen "SoftAppsScreen"
         Update-WPFControls
 
         # Download URL for Edge
@@ -5353,8 +5353,8 @@ function Install-MicrosoftEdge {
             $webClient.DownloadFile($url, $installerPath)
         }
         catch {
-            Write-Log "Î´ÄÜÏÂÔØ Edge °²×°³ÌÐò: $($_.Exception.Message)" -Severity 'ERROR'
-            Write-Status "ÏÂÔØ Microsoft Edge Ê§°Ü¡£ÇëÖØÊÔ¡£" -TargetScreen "SoftAppsScreen"
+            Write-Log "æœªèƒ½ä¸‹è½½ Edge å®‰è£…ç¨‹åº: $($_.Exception.Message)" -Severity 'ERROR'
+            Write-Status "ä¸‹è½½ Microsoft Edge å¤±è´¥ã€‚è¯·é‡è¯•ã€‚" -TargetScreen "SoftAppsScreen"
             Update-WPFControls
             return $false
         }
@@ -5362,12 +5362,12 @@ function Install-MicrosoftEdge {
         # Verify the download
         if (-not (Test-Path $installerPath)) {
             Write-Log "Edge installer not found after download" -Severity 'ERROR'
-            Write-Status "ÏÂÔØ Microsoft Edge Ê§°Ü¡£ÇëÖØÊÔ¡£" -TargetScreen "SoftAppsScreen"
+            Write-Status "ä¸‹è½½ Microsoft Edge å¤±è´¥ã€‚è¯·é‡è¯•ã€‚" -TargetScreen "SoftAppsScreen"
             Update-WPFControls
             return $false
         }
 
-        Write-Status "ÕýÔÚ°²×°Microsoft Edge... ÇëÉÔºò¡£" -TargetScreen "SoftAppsScreen"
+        Write-Status "æ­£åœ¨å®‰è£…Microsoft Edge... è¯·ç¨å€™ã€‚" -TargetScreen "SoftAppsScreen"
         Update-WPFControls
 
         # Install Edge
@@ -5400,25 +5400,25 @@ function Install-MicrosoftEdge {
 
         # Check if installation was successful
         if ($process.ExitCode -eq 0) {
-            Write-Status "Microsoft Edge ÒÑ³É¹¦°²×°£¡" -TargetScreen "SoftAppsScreen"
+            Write-Status "Microsoft Edge å·²æˆåŠŸå®‰è£…ï¼" -TargetScreen "SoftAppsScreen"
             Write-Log "Microsoft Edge installed successfully" -Severity 'INFO'
             Update-WPFControls
-            Show-MessageBox -Message "Microsoft Edge ÒÑ³É¹¦°²×°£¡" -Title "°²×°Íê³É" -Icon Information
+            Show-MessageBox -Message "Microsoft Edge å·²æˆåŠŸå®‰è£…ï¼" -Title "å®‰è£…å®Œæˆ" -Icon Information
             return $true
         }
         else {
             Write-Status "Failed to install Microsoft Edge. Exit code: $($process.ExitCode)" -TargetScreen "SoftAppsScreen"
             Write-Log "Edge installation failed with exit code: $($process.ExitCode)" -Severity 'ERROR'
             Update-WPFControls
-            Show-MessageBox -Message "Î´ÄÜ°²×°Microsoft Edge¡£ÇëÖØÊÔ¡£" -Title "°²×°´íÎó" -Icon Error
+            Show-MessageBox -Message "æœªèƒ½å®‰è£…Microsoft Edgeã€‚è¯·é‡è¯•ã€‚" -Title "å®‰è£…é”™è¯¯" -Icon Error
             return $false
         }
     }
     catch {
         Write-Log "Error during Edge installation: $($_.Exception.Message)" -Severity 'ERROR'
-        Write-Status "ÔÚ°²×°Microsoft EdgeÊ±·¢Éú´íÎó¡£" -TargetScreen "SoftAppsScreen"
+        Write-Status "åœ¨å®‰è£…Microsoft Edgeæ—¶å‘ç”Ÿé”™è¯¯ã€‚" -TargetScreen "SoftAppsScreen"
         Update-WPFControls
-        Show-MessageBox -Message "ÔÚ°²×°Microsoft EdgeÊ±·¢Éú´íÎó¡£`n`n$($_.Exception.Message)" -Title "°²×°´íÎó" -Icon Error
+        Show-MessageBox -Message "åœ¨å®‰è£…Microsoft Edgeæ—¶å‘ç”Ÿé”™è¯¯ã€‚`n`n$($_.Exception.Message)" -Title "å®‰è£…é”™è¯¯" -Icon Error
         return $false
     }
 }
@@ -5726,36 +5726,36 @@ $WindowsPackages = @{
     # 3D/Mixed Reality
     "Microsoft.Microsoft3DViewer"            = @{
         Category     = "3D/Mixed Reality"
-        FriendlyName = "3D ²é¿´Æ÷"
+        FriendlyName = "3D æŸ¥çœ‹å™¨"
         PackageName  = "Microsoft.Microsoft3DViewer"
     }
     "Microsoft.MixedReality.Portal"          = @{
         Category     = "3D/Mixed Reality"
-        FriendlyName = "»ìºÏÏÖÊµÃÅ»§"
+        FriendlyName = "æ··åˆçŽ°å®žé—¨æˆ·"
         PackageName  = "Microsoft.MixedReality.Portal"
     }
 
     # Bing/Search
     "Microsoft.BingSearch"                   = @{
         Category     = "Bing/Search"
-        FriendlyName = "Bing ËÑË÷"
+        FriendlyName = "Bing æœç´¢"
         PackageName  = "Microsoft.BingSearch"
     }
     "Microsoft.BingNews"                     = @{
         Category     = "Bing/Search"
-        FriendlyName = "×ÊÑ¶"
+        FriendlyName = "èµ„è®¯"
         PackageName  = "Microsoft.BingNews"
     }
     "Microsoft.BingWeather"                  = @{
         Category     = "Bing/Search"
-        FriendlyName = "ÌìÆø"
+        FriendlyName = "å¤©æ°”"
         PackageName  = "Microsoft.BingWeather"
     }
 
     # Camera/Media
     "Microsoft.WindowsCamera"                = @{
         Category     = "Camera/Media"
-        FriendlyName = "ÕÕÏà»ú"
+        FriendlyName = "ç…§ç›¸æœº"
         PackageName  = "Microsoft.WindowsCamera"
     }
     "Clipchamp.Clipchamp"                    = @{
@@ -5767,7 +5767,7 @@ $WindowsPackages = @{
     # System Utilities
     "Microsoft.WindowsAlarms"                = @{
         Category     = "System Utilities"
-        FriendlyName = "ÄÖÖÓºÍÊ±ÖÓ"
+        FriendlyName = "é—¹é’Ÿå’Œæ—¶é’Ÿ"
         PackageName  = "Microsoft.WindowsAlarms"
     }
     "Microsoft.549981C3F5F10"                = @{
@@ -5777,19 +5777,19 @@ $WindowsPackages = @{
     }
     "Microsoft.GetHelp"                      = @{
         Category     = "System Utilities"
-        FriendlyName = "»ñÈ¡°ïÖú"
+        FriendlyName = "èŽ·å–å¸®åŠ©"
         PackageName  = "Microsoft.GetHelp"
     }
     "Microsoft.WindowsCalculator"            = @{
         Category     = "System Utilities"
-        FriendlyName = "¼ÆËãÆ÷"
+        FriendlyName = "è®¡ç®—å™¨"
         PackageName  = "Microsoft.WindowsCalculator"
     }
 
     # Development
     "Microsoft.Windows.DevHome"              = @{
         Category         = "Development"
-        FriendlyName     = "¿ª·¢ÈËÔ±Ö÷Ò³"
+        FriendlyName     = "å¼€å‘äººå‘˜ä¸»é¡µ"
         PackageName      = "Microsoft.Windows.DevHome"
         RegistrySettings = @(
             [pscustomobject]@{
@@ -5806,12 +5806,12 @@ $WindowsPackages = @{
     # Communication & Family
     "MicrosoftCorporationII.MicrosoftFamily" = @{
         Category     = "Communication"
-        FriendlyName = "Microsoft ¼ÒÍ¥"
+        FriendlyName = "Microsoft å®¶åº­"
         PackageName  = "MicrosoftCorporationII.MicrosoftFamily"
     }
     "microsoft.windowscommunicationsapps"    = @{
         Category     = "Communication"
-        FriendlyName = "ÓÊ¼þºÍÈÕÀú"
+        FriendlyName = "é‚®ä»¶å’Œæ—¥åŽ†"
         PackageName  = "microsoft.windowscommunicationsapps"
     }
     "Microsoft.SkypeApp"                     = @{
@@ -5837,17 +5837,17 @@ $WindowsPackages = @{
     # System Tools
     "Microsoft.WindowsFeedbackHub"           = @{
         Category     = "System Tools"
-        FriendlyName = "·´À¡ÖÐÐÄ"
+        FriendlyName = "åé¦ˆä¸­å¿ƒ"
         PackageName  = "Microsoft.WindowsFeedbackHub"
     }
     "Microsoft.WindowsMaps"                  = @{
         Category     = "System Tools"
-        FriendlyName = "µØÍ¼"
+        FriendlyName = "åœ°å›¾"
         PackageName  = "Microsoft.WindowsMaps"
     }
     "Microsoft.WindowsTerminal"              = @{
         Category     = "System Tools"
-        FriendlyName = "ÖÕ¶Ë"
+        FriendlyName = "ç»ˆç«¯"
         PackageName  = "Microsoft.WindowsTerminal"
     }
 
@@ -5864,7 +5864,7 @@ $WindowsPackages = @{
     }
     "Microsoft.OutlookForWindows"            = @{
         Category         = "Office"
-        FriendlyName     = "ÐÂ°æ Outlook"
+        FriendlyName     = "æ–°ç‰ˆ Outlook"
         PackageName      = "Microsoft.OutlookForWindows"
         RegistrySettings = @(
             [pscustomobject]@{
@@ -5888,29 +5888,29 @@ $WindowsPackages = @{
     # Graphics & Images
     "Microsoft.MSPaint"                      = @{
         Category     = "Graphics"
-        FriendlyName = "»­Í¼ 3D"
+        FriendlyName = "ç”»å›¾ 3D"
         PackageName  = "Microsoft.MSPaint"
     }
     "Microsoft.Paint"                        = @{
         Category     = "Graphics"
-        FriendlyName = "»­Í¼"
+        FriendlyName = "ç”»å›¾"
         PackageName  = "Microsoft.Paint"
     }
     "Microsoft.Windows.Photos"               = @{
         Category     = "Graphics"
-        FriendlyName = "ÕÕÆ¬"
+        FriendlyName = "ç…§ç‰‡"
         PackageName  = "Microsoft.Windows.Photos"
     }
     "Microsoft.ScreenSketch"                 = @{
         Category     = "Graphics"
-        FriendlyName = "½ØÍ¼ºÍ²ÝÍ¼"
+        FriendlyName = "æˆªå›¾å’Œè‰å›¾"
         PackageName  = "Microsoft.ScreenSketch"
     }
 
     # Social & People
     "Microsoft.People"                       = @{
         Category     = "Social"
-        FriendlyName = "ÈËÂö"
+        FriendlyName = "äººè„‰"
         PackageName  = "Microsoft.People"
     }
 
@@ -5924,7 +5924,7 @@ $WindowsPackages = @{
     # Support Tools
     "MicrosoftCorporationII.QuickAssist"     = @{
         Category     = "Support"
-        FriendlyName = "¿ìËÙÖúÊÖ"
+        FriendlyName = "å¿«é€ŸåŠ©æ‰‹"
         PackageName  = "MicrosoftCorporationII.QuickAssist"
     }
 
@@ -5938,7 +5938,7 @@ $WindowsPackages = @{
         Category     = "Games"
         FriendlyName = "Xbox"
         PackageName  = "Xbox"
-        Description  = "°üÀ¨XboxÓ¦ÓÃ¡¢ÓÎÏ·À¸¡¢ÓÎÏ··þÎñºÍÉí·ÝÌá¹©ÉÌ"
+        Description  = "åŒ…æ‹¬Xboxåº”ç”¨ã€æ¸¸æˆæ ã€æ¸¸æˆæœåŠ¡å’Œèº«ä»½æä¾›å•†"
         SubPackages  = @(
             "Microsoft.Xbox.TCUI",
             "Microsoft.XboxApp",
@@ -5959,17 +5959,17 @@ $WindowsPackages = @{
     # Media Players
     "Microsoft.ZuneMusic"                    = @{
         Category     = "Media"
-        FriendlyName = "Groove ÒôÀÖ"
+        FriendlyName = "Groove éŸ³ä¹"
         PackageName  = "Microsoft.ZuneMusic"
     }
     "Microsoft.ZuneVideo"                    = @{
         Category     = "Media"
-        FriendlyName = "µçÓ°ºÍµçÊÓ"
+        FriendlyName = "ç”µå½±å’Œç”µè§†"
         PackageName  = "Microsoft.ZuneVideo"
     }
     "Microsoft.WindowsSoundRecorder"         = @{
         Category     = "Media"
-        FriendlyName = "Â¼Òô»ú"
+        FriendlyName = "å½•éŸ³æœº"
         PackageName  = "Microsoft.WindowsSoundRecorder"
     }
 
@@ -5981,7 +5981,7 @@ $WindowsPackages = @{
     }
     "Microsoft.Getstarted"                   = @{
         Category     = "Productivity"
-        FriendlyName = "¿ªÊ¼Ê¹ÓÃ"
+        FriendlyName = "å¼€å§‹ä½¿ç”¨"
         PackageName  = "Microsoft.Getstarted"
     }
     "Microsoft.Todos"                        = @{
@@ -5991,14 +5991,14 @@ $WindowsPackages = @{
     }
     "Microsoft.WindowsNotepad"               = @{
         Category     = "Productivity"
-        FriendlyName = "¼ÇÊÂ±¾"
+        FriendlyName = "è®°äº‹æœ¬"
         PackageName  = "Microsoft.WindowsNotepad"
     }
 
     # Phone Integration
     "Microsoft.YourPhone"                    = @{
         Category     = "Phone"
-        FriendlyName = "ÊÖ»úÁ¬½Ó"
+        FriendlyName = "æ‰‹æœºè¿žæŽ¥"
         PackageName  = "Microsoft.YourPhone"
     }
 
@@ -6007,7 +6007,7 @@ $WindowsPackages = @{
         Category         = "AI"
         FriendlyName     = "Copilot"
         PackageName      = "Copilot"
-        Description      = "°üÀ¨Copilot¡¢ÆäÌá¹©ÉÌºÍÉÌµê×é¼þ"
+        Description      = "åŒ…æ‹¬Copilotã€å…¶æä¾›å•†å’Œå•†åº—ç»„ä»¶"
         SubPackages      = @(
             "Microsoft.Windows.Ai.Copilot.Provider",
             "Microsoft.Copilot",
@@ -6055,11 +6055,11 @@ $LegacyCapabilities = @{
         Name         = "Browser.InternetExplorer"
     }
     "MathRecognizer"                   = @{
-        FriendlyName = "ÊýÑ§ÊäÈëÃæ°å"
+        FriendlyName = "æ•°å­¦è¾“å…¥é¢æ¿"
         Name         = "MathRecognizer"
     }
     "OpenSSH.Client"                   = @{
-        FriendlyName = "OpenSSH ¿Í»§¶Ë"
+        FriendlyName = "OpenSSH å®¢æˆ·ç«¯"
         Name         = "OpenSSH.Client"
     }
     "Microsoft.Windows.PowerShell.ISE" = @{
@@ -6067,11 +6067,11 @@ $LegacyCapabilities = @{
         Name         = "Microsoft.Windows.PowerShell.ISE"
     }
     "App.Support.QuickAssist"          = @{
-        FriendlyName = "¿ìËÙÖúÊÖ"
+        FriendlyName = "å¿«é€ŸåŠ©æ‰‹"
         Name         = "App.Support.QuickAssist"
     }
     "App.StepsRecorder"                = @{
-        FriendlyName = "²½Öè¼ÇÂ¼Æ÷"
+        FriendlyName = "æ­¥éª¤è®°å½•å™¨"
         Name         = "App.StepsRecorder"
     }
     "Media.WindowsMediaPlayer"         = @{
@@ -6079,11 +6079,11 @@ $LegacyCapabilities = @{
         Name         = "Media.WindowsMediaPlayer"
     }
     "Microsoft.Windows.WordPad"        = @{
-        FriendlyName = "Ð´×Ö°å"
+        FriendlyName = "å†™å­—æ¿"
         Name         = "Microsoft.Windows.WordPad"
     }
     "Microsoft.Windows.MSPaint"        = @{
-        FriendlyName = "»­Í¼"
+        FriendlyName = "ç”»å›¾"
         Name         = "Microsoft.Windows.MSPaint"
     }
 }
@@ -6261,7 +6261,7 @@ function Initialize-PackageCheckboxes {
     $sortedItems += @{
         Key         = "Recall"
         Value       = @{
-            FriendlyName = "»Ø¹Ë"
+            FriendlyName = "å›žé¡¾"
             PackageName  = "Recall"
             IsSpecial    = $true
         }
@@ -6404,7 +6404,7 @@ function Initialize-BloatwareUI {
 # Function to initialize the select all checkbox
 function Initialize-SelectAllCheckbox {
     $script:selectAllChk = New-Object System.Windows.Controls.CheckBox
-    $script:selectAllChk.Content = "Ñ¡ÔñÈ«²¿"
+    $script:selectAllChk.Content = "é€‰æ‹©å…¨éƒ¨"
     $script:selectAllChk.FontSize = 14
     $script:selectAllChk.FontWeight = [System.Windows.FontWeights]::Bold
     $script:selectAllChk.Margin = [System.Windows.Thickness]::new(5)
@@ -6426,7 +6426,7 @@ function Initialize-RemoveAppsButton {
 
     # Create button
     $script:removeAppsButton = New-Object System.Windows.Controls.Button
-    $script:removeAppsButton.Content = "ÒÆ³ýÓ¦ÓÃ"
+    $script:removeAppsButton.Content = "ç§»é™¤åº”ç”¨"
     $script:removeAppsButton.Width = 130
     $script:removeAppsButton.Height = 35
     $script:removeAppsButton.Style = $window.FindResource("PrimaryButtonStyle")
@@ -6451,7 +6451,7 @@ function Initialize-RemoveAppsButton {
 
     # Create text
     $text = New-Object System.Windows.Controls.TextBlock
-    $text.Text = "¹´Ñ¡Äú²»Ï£ÍûÔÚµçÄÔÉÏ³öÏÖµÄËùÓÐÓ¦ÓÃ³ÌÐò¡£Windows ¿ÉÄÜ»á³¢ÊÔ½«ËüÃÇÖØÐÂÌí¼Ó»ØÀ´£¬µ« Winhance »á¼ÌÐøÎªÄúÉ¾³ýËüÃÇ¡£"
+    $text.Text = "å‹¾é€‰æ‚¨ä¸å¸Œæœ›åœ¨ç”µè„‘ä¸Šå‡ºçŽ°çš„æ‰€æœ‰åº”ç”¨ç¨‹åºã€‚Windows å¯èƒ½ä¼šå°è¯•å°†å®ƒä»¬é‡æ–°æ·»åŠ å›žæ¥ï¼Œä½† Winhance ä¼šç»§ç»­ä¸ºæ‚¨åˆ é™¤å®ƒä»¬ã€‚"
     $text.FontStyle = [System.Windows.FontStyles]::Italic
     $text.Foreground = [System.Windows.Media.Brushes]::Gray
     $text.VerticalAlignment = "Center"
@@ -6975,11 +6975,11 @@ $EdgeRemovalScript = {
 # Function to remove Microsoft Edge and create removal script and scheduled task
 function Remove-Edge {
     # Confirm with the user before proceeding
-    $result = Show-MessageBox -Message "Äú¼´½«´ÓÏµÍ³ÖÐÉ¾³ýMicrosoft Edge¡£`nÄúÈ·¶¨Òª¼ÌÐøÂð£¿" -Title "¾¯¸æ" -Buttons "YesNo" -Icon "Warning"
+    $result = Show-MessageBox -Message "æ‚¨å³å°†ä»Žç³»ç»Ÿä¸­åˆ é™¤Microsoft Edgeã€‚`næ‚¨ç¡®å®šè¦ç»§ç»­å—ï¼Ÿ" -Title "è­¦å‘Š" -Buttons "YesNo" -Icon "Warning"
 
     if ($result -eq [System.Windows.Forms.DialogResult]::Yes) {
         # Execute the Edge removal logic
-        Write-Status -Message "¿ªÊ¼É¾³ýEdge¡£ÇëÉÔºò..." -TargetScreen "SoftAppsScreen"
+        Write-Status -Message "å¼€å§‹åˆ é™¤Edgeã€‚è¯·ç¨å€™..." -TargetScreen "SoftAppsScreen"
         try {
             & $EdgeRemovalScript
 
@@ -7002,7 +7002,7 @@ function Remove-Edge {
             Write-Status -Message "Scheduled task created to run EdgeRemoval.ps1 at startup." -TargetScreen "SoftAppsScreen"
 
             # Show success message box
-            Show-MessageBox -Message "Microsoft Edge ÒÑ³É¹¦´ÓÄúµÄÏµÍ³ÖÐÉ¾³ý¡£`n`n´´½¨ÁËÒ»¸öÆô¶¯ÈÎÎñÒÔ·ÀÖ¹ËüÖØÐÂ°²×°¡£`nÈç¹ûÄúÓöµ½ÎÊÌâ£¬¿ÉÒÔÉ¾³ýÈÎÎñ¼Æ»®³ÌÐòÖÐµÄ'EdgeRemoval'ÈÎÎñ¡£" -Title "³É¹¦" -Buttons "OK" -Icon "Information"
+            Show-MessageBox -Message "Microsoft Edge å·²æˆåŠŸä»Žæ‚¨çš„ç³»ç»Ÿä¸­åˆ é™¤ã€‚`n`nåˆ›å»ºäº†ä¸€ä¸ªå¯åŠ¨ä»»åŠ¡ä»¥é˜²æ­¢å®ƒé‡æ–°å®‰è£…ã€‚`nå¦‚æžœæ‚¨é‡åˆ°é—®é¢˜ï¼Œå¯ä»¥åˆ é™¤ä»»åŠ¡è®¡åˆ’ç¨‹åºä¸­çš„'EdgeRemoval'ä»»åŠ¡ã€‚" -Title "æˆåŠŸ" -Buttons "OK" -Icon "Information"
         }
         catch {
             # Handle errors and display a failure message
@@ -7233,17 +7233,17 @@ del /F /Q "%~f0"
 # Function to Remove-Onedrive
 function Remove-OneDrive {
     # Confirm with the user before proceeding
-    $result = Show-MessageBox -Message "Äú¼´½«´ÓÏµÍ³ÖÐÉ¾³ýOneDrive¡£`n`nÕâ½«»á:
-- ÍêÈ«Ð¶ÔØOneDrive
-- ´Ó Windows ÖÐÒÆ³ý OneDrive ¼¯³É
-- ½ûÓÃ OneDrive ÏµÍ³¼¶¹¦ÄÜ`n`nÈ·¶¨Òª¼ÌÐøÂð£¿" -Title "¾¯¸æ" -Buttons "YesNo" -Icon "Warning"
+    $result = Show-MessageBox -Message "æ‚¨å³å°†ä»Žç³»ç»Ÿä¸­åˆ é™¤OneDriveã€‚`n`nè¿™å°†ä¼š:
+- å®Œå…¨å¸è½½OneDrive
+- ä»Ž Windows ä¸­ç§»é™¤ OneDrive é›†æˆ
+- ç¦ç”¨ OneDrive ç³»ç»Ÿçº§åŠŸèƒ½`n`nç¡®å®šè¦ç»§ç»­å—ï¼Ÿ" -Title "è­¦å‘Š" -Buttons "YesNo" -Icon "Warning"
 
     if ($result -eq [System.Windows.Forms.DialogResult]::Yes) {
         # Set wait cursor
         $Window.Cursor = [System.Windows.Input.Cursors]::Wait
         
         try {
-            Write-Status -Message "ÕýÔÚÒÆ³ýOneDrive¡£ÇëÉÔºò..." -TargetScreen SoftAppsScreen
+            Write-Status -Message "æ­£åœ¨ç§»é™¤OneDriveã€‚è¯·ç¨å€™..." -TargetScreen SoftAppsScreen
             Update-WPFControls
             
             # Execute the OneDrive removal logic
@@ -7280,9 +7280,9 @@ function Remove-OneDrive {
             Update-WPFControls
         }
         catch {
-            Write-Status -Message "É¾³ý OneDrive Ê±³ö´í: $($_.Exception.Message)" -TargetScreen SoftAppsScreen
+            Write-Status -Message "åˆ é™¤ OneDrive æ—¶å‡ºé”™: $($_.Exception.Message)" -TargetScreen SoftAppsScreen
             Update-WPFControls
-            Show-MessageBox -Message "ÔÚÉ¾³ý OneDrive Ê±·¢Éú´íÎó: $($_.Exception.Message)" -Title "´íÎó" -Buttons OK -Icon Error
+            Show-MessageBox -Message "åœ¨åˆ é™¤ OneDrive æ—¶å‘ç”Ÿé”™è¯¯: $($_.Exception.Message)" -Title "é”™è¯¯" -Buttons OK -Icon Error
         }
         finally {
             # Reset cursor back to normal
@@ -7290,7 +7290,7 @@ function Remove-OneDrive {
         }
     }
     else {
-        Write-Status -Message "OneDrive ÒÆ³ý±»ÓÃ»§È¡Ïû¡£" -TargetScreen SoftAppsScreen
+        Write-Status -Message "OneDrive ç§»é™¤è¢«ç”¨æˆ·å–æ¶ˆã€‚" -TargetScreen SoftAppsScreen
         Update-WPFControls
     }
 }
@@ -7304,7 +7304,7 @@ function Remove-SelectedBloatware {
             [System.Collections.ArrayList]$bloatScriptContent
         )
     
-        Write-Status "ÕýÔÚÒÆ³ý: $AppName" -TargetScreen SoftAppsScreen
+        Write-Status "æ­£åœ¨ç§»é™¤: $AppName" -TargetScreen SoftAppsScreen
         
         # Check if this is a package group (like Xbox) that has subpackages
         $appConfig = $WindowsPackages[$AppName]
@@ -7474,7 +7474,7 @@ function Remove-SelectedBloatware {
         if ($item -is [System.Windows.Controls.CheckBox] -and $item.IsChecked) {
             # Skip "Select All" checkbox
             if ($item.Content -is [System.Windows.Controls.StackPanel] -and 
-                $item.Content.Children[1].Text -eq "Ñ¡ÔñÈ«²¿") { continue }
+                $item.Content.Children[1].Text -eq "é€‰æ‹©å…¨éƒ¨") { continue }
 
             if ($item.Tag -is [hashtable]) {
                 if ($item.Tag.IsCapability) {
@@ -7492,7 +7492,7 @@ function Remove-SelectedBloatware {
 
     # Show warning if any items are selected
     if ($hasApps -or $hasCapabilities) {
-        $result = Show-MessageBox -Message "Äú¼´½«´ÓÏµÍ³ÖÐÉ¾³ý¿ÉÄÜÒýÆð²»ÎÈ¶¨µÄÓ¦ÓÃ³ÌÐòºÍ¹¦ÄÜ¡£`nÈ±Ê§µÄÏîÄ¿½«²»µÃ²»Öð¸öÖØÐÂ°²×°¡£`nÄúÈ·¶¨Òª¼ÌÐøÂð£¿" -Title "¾¯¸æ" -Buttons "YesNo" -Icon "Warning"
+        $result = Show-MessageBox -Message "æ‚¨å³å°†ä»Žç³»ç»Ÿä¸­åˆ é™¤å¯èƒ½å¼•èµ·ä¸ç¨³å®šçš„åº”ç”¨ç¨‹åºå’ŒåŠŸèƒ½ã€‚`nç¼ºå¤±çš„é¡¹ç›®å°†ä¸å¾—ä¸é€ä¸ªé‡æ–°å®‰è£…ã€‚`næ‚¨ç¡®å®šè¦ç»§ç»­å—ï¼Ÿ" -Title "è­¦å‘Š" -Buttons "YesNo" -Icon "Warning"
 
         if ($result -ne [System.Windows.Forms.DialogResult]::Yes) {
             Write-Status "Operation canceled by the user." -TargetScreen SoftAppsScreen
@@ -7535,7 +7535,7 @@ function Remove-SelectedBloatware {
     foreach ($item in $uniformGrid.Children) {
         if ($item -is [System.Windows.Controls.CheckBox] -and $item.IsChecked) {
             # Skip "Select All" checkbox
-            if ($item.Content -eq "Ñ¡ÔñÈ«²¿") { continue }
+            if ($item.Content -eq "é€‰æ‹©å…¨éƒ¨") { continue }
 
             if ($item.Tag -is [hashtable]) {
                 if ($item.Tag.IsCapability) {
@@ -7684,12 +7684,12 @@ function Update-UACNotificationLevel {
 
                 # Set the registry value
                 Set-ItemProperty -Path $regPath -Name $regName -Value $uacMap.Registry[$Level] -Type DWord
-                Write-Status "UAC ³É¹¦ÉèÖÃÎª $($uacMap.Names[$Level])" -TargetScreen OptimizeScreen
+                Write-Status "UAC æˆåŠŸè®¾ç½®ä¸º $($uacMap.Names[$Level])" -TargetScreen OptimizeScreen
             }
         }
     }
     catch {
-        $errorMsg = if ($Mode -eq 'Get') { "UAC Í¨Öª¼¶±ð¼ì²éÊ§°Ü: $_" } else { "UAC update failed: $($_.Exception.Message)" }
+        $errorMsg = if ($Mode -eq 'Get') { "UAC é€šçŸ¥çº§åˆ«æ£€æŸ¥å¤±è´¥: $_" } else { "UAC update failed: $($_.Exception.Message)" }
         Write-Log $errorMsg
         if ($Mode -eq 'Set') {
             Write-Status $errorMsg -TargetScreen OptimizeScreen
@@ -7704,12 +7704,12 @@ function Update-UACNotificationLevel {
 # Source Script: https://raw.githubusercontent.com/FR33THYFR33THY/Ultimate-Windows-Optimization-Guide/refs/heads/main/8%20Advanced/7%20Security.ps1
 function Enable-WindowsSecuritySuite {
     $enableWarning = @"
-Äú¼´½«ÆôÓÃ Windows °²È«×é¼þ²¢ÉèÖÃ Windows °²È«Ä¬ÈÏÖµ¡£
+æ‚¨å³å°†å¯ç”¨ Windows å®‰å…¨ç»„ä»¶å¹¶è®¾ç½® Windows å®‰å…¨é»˜è®¤å€¼ã€‚
 
-ÄúÏë¼ÌÐøÂð£¿
+æ‚¨æƒ³ç»§ç»­å—ï¼Ÿ
 "@
 
-    $confirm = Show-MessageBox -Message $enableWarning -Title "ÆôÓÃ Windows °²È«" -Buttons "YesNo" -Icon "Question"
+    $confirm = Show-MessageBox -Message $enableWarning -Title "å¯ç”¨ Windows å®‰å…¨" -Buttons "YesNo" -Icon "Question"
     if ($confirm -eq "No") { return }
     Write-Status "Enabling Windows Security Suite. Please Wait . . ." -TargetScreen OptimizeScreen
     # create reg file
@@ -8151,7 +8151,7 @@ cmd.exe /c move /y "C:\Windows\smartscreen.exe" "C:\Windows\System32\smartscreen
     Remove-Item -Path "$env:TEMP\SecurityOn.reg" -Force -ErrorAction SilentlyContinue
     Write-Status "Windows Security Suite Enabled." -TargetScreen OptimizeScreen
     # Show a single message box with "Yes" and "No" options
-    $response = Show-MessageBox -Message "Windows °²È«×é¼þÒÑÆôÓÃ¡£`nÐèÒªÖØÐÂÆô¶¯²ÅÄÜÓ¦ÓÃ¸ü¸Ä¡£`nÏÖÔÚÖØÆô£¿" -Title "ÐèÒªÖØÆô" -Buttons "YesNo" -Icon "Warning"
+    $response = Show-MessageBox -Message "Windows å®‰å…¨ç»„ä»¶å·²å¯ç”¨ã€‚`néœ€è¦é‡æ–°å¯åŠ¨æ‰èƒ½åº”ç”¨æ›´æ”¹ã€‚`nçŽ°åœ¨é‡å¯ï¼Ÿ" -Title "éœ€è¦é‡å¯" -Buttons "YesNo" -Icon "Warning"
 
     # Check the user's response
     if ($response -eq [System.Windows.Forms.DialogResult]::Yes) {
@@ -8165,28 +8165,28 @@ cmd.exe /c move /y "C:\Windows\smartscreen.exe" "C:\Windows\System32\smartscreen
 function Disable-WindowsSecuritySuite {
     # Initial warning
     $initialWarning = @"
-Õâ½«½ûÓÃ°üÀ¨¹Ø¼üµÄ Windows °²È«×é¼þ:
-- ÊµÊ±±£»¤
-- ÔÆÌá¹©µÄ±£»¤
-- ·À»ðÇ½
+è¿™å°†ç¦ç”¨åŒ…æ‹¬å…³é”®çš„ Windows å®‰å…¨ç»„ä»¶:
+- å®žæ—¶ä¿æŠ¤
+- äº‘æä¾›çš„ä¿æŠ¤
+- é˜²ç«å¢™
 - SmartScreen
-- ·´¶ñÒâÈí¼þ·þÎñ
-- ÀûÓÃ±£»¤´ëÊ©
+- åæ¶æ„è½¯ä»¶æœåŠ¡
+- åˆ©ç”¨ä¿æŠ¤æŽªæ–½
 
-Õâ½«Ê¹ÄúµÄÏµÍ³ÈÝÒ×ÊÜµ½¹¥»÷£¡
+è¿™å°†ä½¿æ‚¨çš„ç³»ç»Ÿå®¹æ˜“å—åˆ°æ”»å‡»ï¼
 
-ÄúÏë¼ÌÐøÂð£¿
+æ‚¨æƒ³ç»§ç»­å—ï¼Ÿ
 "@
 
-    $confirm = Show-MessageBox -Message $initialWarning -Title "°²È«¾¯¸æ" -Buttons "YesNo" -Icon "Warning"
+    $confirm = Show-MessageBox -Message $initialWarning -Title "å®‰å…¨è­¦å‘Š" -Buttons "YesNo" -Icon "Warning"
     if ($confirm -eq "No") { return }
 
     # Additional warning
     $additionalWarning = @"
-ÄãÈ·¶¨ÄãÖªµÀ×Ô¼ºÔÚ×öÊ²Ã´Âð£¿
+ä½ ç¡®å®šä½ çŸ¥é“è‡ªå·±åœ¨åšä»€ä¹ˆå—ï¼Ÿ
 "@
 
-    $finalConfirm = Show-MessageBox -Message $additionalWarning -Title "×îÖÕÈ·ÈÏ" -Buttons "YesNo" -Icon "Warning"
+    $finalConfirm = Show-MessageBox -Message $additionalWarning -Title "æœ€ç»ˆç¡®è®¤" -Buttons "YesNo" -Icon "Warning"
     if ($finalConfirm -eq "No") { return }
 
     Write-Status "Disabling Windows Security Suite. Please Wait . . ." -TargetScreen OptimizeScreen
@@ -8631,7 +8631,7 @@ cmd.exe /c move /y "C:\Windows\System32\smartscreen.exe" "C:\Windows\smartscreen
     Remove-Item -Path "$env:TEMP\SecurityOff.reg" -Force -ErrorAction SilentlyContinue
     # Show a single message box with "Yes" and "No" options
     Write-Status "Windows Security Suite Disabled." -TargetScreen OptimizeScreen
-    $response = Show-MessageBox -Message "Windows °²È«×é¼þÒÑ½ûÓÃ¡£`nÐèÒªÖØÐÂÆô¶¯²ÅÄÜÓ¦ÓÃ¸ü¸Ä¡£`nÏÖÔÚÖØÆô£¿" -Title "ÐèÒªÖØÆô" -Buttons "YesNo" -Icon "Warning"
+    $response = Show-MessageBox -Message "Windows å®‰å…¨ç»„ä»¶å·²ç¦ç”¨ã€‚`néœ€è¦é‡æ–°å¯åŠ¨æ‰èƒ½åº”ç”¨æ›´æ”¹ã€‚`nçŽ°åœ¨é‡å¯ï¼Ÿ" -Title "éœ€è¦é‡å¯" -Buttons "YesNo" -Icon "Warning"
 
     # Check the user's response
     if ($response -eq [System.Windows.Forms.DialogResult]::Yes) {
@@ -9102,7 +9102,7 @@ function Set-DarkMode {
                 }
                 else {
                     Write-Log "Default wallpaper not found at: $wallpaperPath" -Severity Warning
-                    Show-MessageBox -Message "ÎÞ·¨ÕÒµ½Ä¬ÈÏ±ÚÖ½ÎÄ¼þ¡£" -Icon Warning
+                    Show-MessageBox -Message "æ— æ³•æ‰¾åˆ°é»˜è®¤å£çº¸æ–‡ä»¶ã€‚" -Icon Warning
                 }
             }
             catch {
@@ -9113,7 +9113,7 @@ function Set-DarkMode {
 
         Update-WinGUI
         Write-Log "Dark Mode $(if ($EnableDarkMode) {'enabled'} else {'disabled'})"
-        Write-Status -Message "Ö÷Ìâ¸ü¸Ä³É¹¦" -TargetScreen CustomizeScreen
+        Write-Status -Message "ä¸»é¢˜æ›´æ”¹æˆåŠŸ" -TargetScreen CustomizeScreen
     }
     catch {
         Write-Log "Theme update failed: $_"
@@ -9124,7 +9124,7 @@ function Set-DarkMode {
 # Clean Windows 10 Start Menu
 function Reset-Windows10StartMenu {
     
-    Write-Status "ÇåÀí Windows 10 ¿ªÊ¼²Ëµ¥..." -TargetScreen CustomizeScreen
+    Write-Status "æ¸…ç† Windows 10 å¼€å§‹èœå•..." -TargetScreen CustomizeScreen
     # CLEAN START MENU W10
     # delete startmenulayout.xml
     Remove-Item -Recurse -Force "$env:SystemDrive\Windows\StartMenuLayout.xml" -ErrorAction SilentlyContinue | Out-Null
@@ -9177,7 +9177,7 @@ function Reset-Windows11StartMenu {
     
     try {
 
-        Write-Status "ÇåÀí Windows 11 ¿ªÊ¼²Ëµ¥..." -TargetScreen CustomizeScreen
+        Write-Status "æ¸…ç† Windows 11 å¼€å§‹èœå•..." -TargetScreen CustomizeScreen
         # Suppress progress output
         $progressPreference = 'SilentlyContinue'
         
@@ -9694,7 +9694,7 @@ $xaml = @'
                     FontSize="18"
                     FontWeight="Light"
                     Foreground="{DynamicResource PrimaryTextColor}">
-					<Run Text="Winhanceºº»¯°æ "/>
+					<Run Text="Winhanceæ±‰åŒ–ç‰ˆ "/>
 					<Run
                         FontSize="12"
                         FontStyle="Italic"
@@ -9835,19 +9835,19 @@ Margin="0,0,5,0">
             Style="{DynamicResource NavigationButtonStyle}" 
             Tag="&#x1F4BF;"
             Margin="0,0,0,10"
-            Content="Èí¼þ &amp; Ó¦ÓÃ"/>
+            Content="è½¯ä»¶ &amp; åº”ç”¨"/>
 
                 <Button x:Name="OptimizeNavButton"
             Style="{DynamicResource NavigationButtonStyle}" 
             Tag="&#x1F680;"
             Margin="0,0,0,10"
-            Content="ÓÅ»¯"/>
+            Content="ä¼˜åŒ–"/>
 
                 <Button x:Name="CustomizeNavButton"
             Style="{DynamicResource NavigationButtonStyle}" 
             Tag="&#x1F3A8;"
             Margin="0,0,0,10"
-            Content="×Ô¶¨Òå"/>
+            Content="è‡ªå®šä¹‰"/>
 
                 <!-- Fixed spacer -->
                 <Rectangle Height="235" Fill="Transparent"/>
@@ -9858,7 +9858,7 @@ Margin="0,0,5,0">
             Tag="&#xE946;" 
             FontFamily="Segoe MDL2 Assets"
             Margin="0,0,0,10"
-            Content="¹ØÓÚ" />
+            Content="å…³äºŽ" />
             </StackPanel>
             <!-- Software and Apps Screen -->
             <StackPanel x:Name="SoftAppsScreen" Width="943" Height="550" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="93,56,0,0" >
@@ -9866,8 +9866,8 @@ Margin="0,0,5,0">
                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock Width="80" Height="70" Margin="0,0,0,0" DockPanel.Dock="Left" FontFamily="Segoe UI Emoji" FontSize="60" Foreground="{DynamicResource PrimaryTextColor}" Text="&#x1F4BF;"  LineHeight="70" LineStackingStrategy="BlockLineHeight" />
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Height="35" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Text="Èí¼þ &amp; Ó¦ÓÃ" />
-                        <TextBlock x:Name="SoftAppsStatusText" Height="22" Margin="0,5,0,0" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei UI" FontSize="14" Foreground="DarkGray" Text="¹ÜÀíÈí¼þµÄ°²×°ºÍÐ¶ÔØ" />
+                        <TextBlock Height="35" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Text="è½¯ä»¶ &amp; åº”ç”¨" />
+                        <TextBlock x:Name="SoftAppsStatusText" Height="22" Margin="0,5,0,0" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei UI" FontSize="14" Foreground="DarkGray" Text="ç®¡ç†è½¯ä»¶çš„å®‰è£…å’Œå¸è½½" />
                     </StackPanel>
                 </DockPanel>
 
@@ -9879,7 +9879,7 @@ Margin="0,0,5,0">
                             <StackPanel>
                                 <Border x:Name="InstallSoftwareHeader" Background="{DynamicResource ContentSectionBorderBrush}" CornerRadius="5" Margin="0,5,0,5" Effect="{StaticResource ShadowEffect}">
                                     <DockPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                                        <TextBlock Text="°²×°Èí¼þ" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Left" />
+                                        <TextBlock Text="å®‰è£…è½¯ä»¶" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Left" />
                                         <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Right" />
                                     </DockPanel>
                                 </Border>
@@ -9891,7 +9891,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Microsoft Store" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallStore" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallStore" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9899,7 +9899,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="UniGetUI" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallUniGetUI" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallUniGetUI" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9907,7 +9907,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Thorium Browser" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallThorium" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallThorium" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9915,7 +9915,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Firefox" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallFirefox" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallFirefox" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9923,7 +9923,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Chrome" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallChrome" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallChrome" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9931,7 +9931,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Brave" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallBrave" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallBrave" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9939,7 +9939,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Microsoft Edge" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallEdge" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallEdge" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9947,7 +9947,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Microsoft Edge WebView" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallEdgeWebView" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallEdgeWebView" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9955,7 +9955,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Microsoft OneDrive" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallOneDrive" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallOneDrive" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                         <Grid Margin="10,5">
                                             <Grid.ColumnDefinitions>
@@ -9963,7 +9963,7 @@ Margin="0,0,5,0">
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Xbox App for Windows" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" Margin="10,0,0,0" Grid.Column="0" />
-                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="°²×°" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallXbox" FontFamily="Microsoft YaHei UI" />
+                                            <Button Style="{DynamicResource PrimaryButtonStyle}" Content="å®‰è£…" Width="80" Height="30" HorizontalAlignment="Right" Grid.Column="1" x:Name="InstallXbox" FontFamily="Microsoft YaHei UI" />
                                         </Grid>
                                     </StackPanel>
                                 </Border>
@@ -9972,7 +9972,7 @@ Margin="0,0,5,0">
                             <StackPanel>
                                 <Border x:Name="RemoveAppsHeader" Background="{DynamicResource ContentSectionBorderBrush}" CornerRadius="5" Margin="0,5,0,5" Effect="{StaticResource ShadowEffect}">
                                     <DockPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                                        <TextBlock Text="ÒÆ³ý Windows Ó¦ÓÃ" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Left" />
+                                        <TextBlock Text="ç§»é™¤ Windows åº”ç”¨" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Left" />
                                         <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Right" />
                                     </DockPanel>
                                 </Border>
@@ -9994,11 +9994,11 @@ Margin="0,0,5,0">
                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock Width="80" Height="70" Margin="0,0,0,0" DockPanel.Dock="Left" FontFamily="Segoe UI Emoji" FontSize="60" Foreground="{DynamicResource PrimaryTextColor}" Text="&#x1F680;"  LineHeight="70" LineStackingStrategy="BlockLineHeight" />
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Height="35" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Text="ÓÅ»¯" />
+                        <TextBlock Height="35" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Text="ä¼˜åŒ–" />
                         <DockPanel LastChildFill="False" Width="861">
-                            <TextBlock x:Name="OptimizeStatusText" Height="22" DockPanel.Dock="Left" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei UI" FontSize="14" Foreground="DarkGray" Text="ÓÅ»¯ÄúµÄÏµÍ³ÉèÖÃºÍÐÔÄÜ" />
-                            <Button x:Name="OptimizeDefaultsButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="Ä¬ÈÏ" Width="80" Height="30" Margin="0,0,5,0"/>
-                            <Button x:Name="OptimizeApplyButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="Ó¦ÓÃ" Width="80" Height="30" Margin="0,0,10,0"/>
+                            <TextBlock x:Name="OptimizeStatusText" Height="22" DockPanel.Dock="Left" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei UI" FontSize="14" Foreground="DarkGray" Text="ä¼˜åŒ–æ‚¨çš„ç³»ç»Ÿè®¾ç½®å’Œæ€§èƒ½" />
+                            <Button x:Name="OptimizeDefaultsButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="é»˜è®¤" Width="80" Height="30" Margin="0,0,5,0"/>
+                            <Button x:Name="OptimizeApplyButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="åº”ç”¨" Width="80" Height="30" Margin="0,0,10,0"/>
                         </DockPanel>
                     </StackPanel>
                 </DockPanel>
@@ -10008,7 +10008,7 @@ Margin="0,0,5,0">
                         <StackPanel Margin="10">
                             <Border x:Name="WindowsSecurityHeaderBorder" Background="{DynamicResource ContentSectionBorderBrush}" CornerRadius="5" Margin="0,5,0,5" Effect="{StaticResource ShadowEffect}">
                                 <DockPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                                    <TextBlock Text="Windows °²È«ÉèÖÃ" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Left" />
+                                    <TextBlock Text="Windows å®‰å…¨è®¾ç½®" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Left" />
                                     <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" Padding="10" DockPanel.Dock="Right" />
                                 </DockPanel>
                             </Border>
@@ -10026,7 +10026,7 @@ Margin="0,0,5,0">
                                         <!-- Left: Title -->
                                         <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                                             <TextBlock 
-                                Text="UAC Í¨ÖªµÈ¼¶ (ÍÆ¼ö£ºµÍ)" 
+                                Text="UAC é€šçŸ¥ç­‰çº§ (æŽ¨èï¼šä½Ž)" 
                                 Foreground="{DynamicResource PrimaryTextColor}"
                                 FontSize="14" 
                                 Margin="25,20,0,0"/>
@@ -10041,9 +10041,9 @@ Margin="0,0,5,0">
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="µÍ" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Left"/>
-                                                <TextBlock Text="ÖÐµÈ" Foreground="{DynamicResource PrimaryTextColor}" Grid.Column="1" HorizontalAlignment="Center"/>
-                                                <TextBlock Text="¸ß" Foreground="{DynamicResource PrimaryTextColor}" Grid.Column="2" HorizontalAlignment="Right"/>
+                                                <TextBlock Text="ä½Ž" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Left"/>
+                                                <TextBlock Text="ä¸­ç­‰" Foreground="{DynamicResource PrimaryTextColor}" Grid.Column="1" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="é«˜" Foreground="{DynamicResource PrimaryTextColor}" Grid.Column="2" HorizontalAlignment="Right"/>
                                             </Grid>
 
                                             <!-- Slider Control -->
@@ -10068,41 +10068,41 @@ Margin="0,0,5,0">
                                                 <TextBlock.ToolTip>
                                                     <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                         <TextBlock>
-                                             ÆôÓÃ:
+                                             å¯ç”¨:
  <LineBreak/>                                           
- Windows Ä¬ÈÏ°²È«ÉèÖÃ£¨½¨Òé£©
+ Windows é»˜è®¤å®‰å…¨è®¾ç½®ï¼ˆå»ºè®®ï¼‰
  <LineBreak/><LineBreak/>
  Disabled:
  <LineBreak/>
- ÒÆ³ýËùÓÐWindows°²È«¹¦ÄÜ£¨²»ÍÆ¼ö£©£º
+ ç§»é™¤æ‰€æœ‰Windowså®‰å…¨åŠŸèƒ½ï¼ˆä¸æŽ¨èï¼‰ï¼š
  <LineBreak/>
- - Windows Defender °²È«ÉèÖÃ
+ - Windows Defender å®‰å…¨è®¾ç½®
  <LineBreak/>
  - Smartscreen
  <LineBreak/>
- - °²È«ÖÐÐÄ·þÎñ
+ - å®‰å…¨ä¸­å¿ƒæœåŠ¡
  <LineBreak/>
- - °²È«ÖÐÐÄÇý¶¯
+ - å®‰å…¨ä¸­å¿ƒé©±åŠ¨
  <LineBreak/>
- - Windows Defender ·À»ðÇ½
+ - Windows Defender é˜²ç«å¢™
  <LineBreak/>
  - Spectre Meltdown
  <LineBreak/>
- - Êý¾ÝÖ´ÐÐ±£»¤
+ - æ•°æ®æ‰§è¡Œä¿æŠ¤
  <LineBreak/>
- - ´ò¿ªÎÄ¼þ°²È«¾¯¸æ
+ - æ‰“å¼€æ–‡ä»¶å®‰å…¨è­¦å‘Š
  <LineBreak/>
- - Windows Defender Ä¬ÈÏ¶¨Òå
+ - Windows Defender é»˜è®¤å®šä¹‰
  <LineBreak/>
- - Windows Defender Ó¦ÓÃ³ÌÐò±£»¤
+ - Windows Defender åº”ç”¨ç¨‹åºä¿æŠ¤
  <LineBreak/><LineBreak/>
- Õâ½«Ê¹ÄúµÄµçÄÔÍêÈ«´¦ÓÚÎÞ±£»¤×´Ì¬¡£
+ è¿™å°†ä½¿æ‚¨çš„ç”µè„‘å®Œå…¨å¤„äºŽæ— ä¿æŠ¤çŠ¶æ€ã€‚
                                                         </TextBlock>
                                                     </ToolTip>
                                                 </TextBlock.ToolTip>
                             </TextBlock>
                                             <TextBlock
-                                Text="Windows °²È«×é¼þ"
+                                Text="Windows å®‰å…¨ç»„ä»¶"
                                 VerticalAlignment="Center"
                                 Foreground="{DynamicResource PrimaryTextColor}"
                                 FontSize="14" />
@@ -10112,7 +10112,7 @@ Margin="0,0,5,0">
                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                                             <Button
                                 Style="{DynamicResource PrimaryButtonStyle}"
-                                Content="ÆôÓÃ"
+                                Content="å¯ç”¨"
                                 Width="80"
                                 Height="30"
                                 Margin="10,0,20,0"
@@ -10121,7 +10121,7 @@ Margin="0,0,5,0">
 
                                             <Button
                                 Style="{DynamicResource PrimaryButtonStyle}"
-                                Content="½ûÓÃ"
+                                Content="ç¦ç”¨"
                                 Width="80"
                                 Height="30"
                                 Margin="10,0,5,0"
@@ -10136,7 +10136,7 @@ Margin="0,0,5,0">
                             <Border Background="{DynamicResource ContentSectionBorderBrush}" CornerRadius="5" Margin="5,5,5,5" Effect="{StaticResource LightShadowEffect}">
                                 <StackPanel Orientation="Horizontal" Margin="10">
                                     <CheckBox x:Name="OptimizeSelectAllCheckbox"
-Content="Ñ¡ÔñÈ«²¿"
+Content="é€‰æ‹©å…¨éƒ¨"
 Style="{DynamicResource CustomCheckBoxStyle}"
 FontSize="14"
 Margin="27,0,0,0"/>
@@ -10149,36 +10149,36 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                   ½ûÓÃ:
-<LineBreak />- »î¶¯ÀúÊ·ÓëÓÃ»§»î¶¯¸ú×Ù
-<LineBreak />- Î»ÖÃ·þÎñÓëµØÍ¼
-<LineBreak />- Ò£²âÓëÕï¶ÏÊý¾ÝÊÕ¼¯
-<LineBreak />- ·´À¡Óë´íÎó±¨¸æ
-<LineBreak />- Windows Ink ¹¤×÷Çø
-<LineBreak />- ¹ã¸æIDºÍ¸öÐÔ»¯¹ã¸æ
-<LineBreak />- ÕË»§ÐÅÏ¢ÓëÍ¨Öª
-<LineBreak />- ÓïÑÔÓëÊäÈëÊý¾ÝÊÕ¼¯
-<LineBreak />- ÓïÒôÊ¶±ð
-<LineBreak />- Ä«¼£Óë´ò×ÖÊý¾ÝÊÕ¼¯
-<LineBreak />- Ô¶³ÌÐ­Öú
-<LineBreak />- Éè±¸ÔªÊý¾ÝÊÕ¼¯
-<LineBreak />- Windows ¿Í»§¶Ë¹¦ÄÜ
-<LineBreak />- ºóÌ¨Ó¦ÓÃ
+                                   ç¦ç”¨:
+<LineBreak />- æ´»åŠ¨åŽ†å²ä¸Žç”¨æˆ·æ´»åŠ¨è·Ÿè¸ª
+<LineBreak />- ä½ç½®æœåŠ¡ä¸Žåœ°å›¾
+<LineBreak />- é¥æµ‹ä¸Žè¯Šæ–­æ•°æ®æ”¶é›†
+<LineBreak />- åé¦ˆä¸Žé”™è¯¯æŠ¥å‘Š
+<LineBreak />- Windows Ink å·¥ä½œåŒº
+<LineBreak />- å¹¿å‘ŠIDå’Œä¸ªæ€§åŒ–å¹¿å‘Š
+<LineBreak />- è´¦æˆ·ä¿¡æ¯ä¸Žé€šçŸ¥
+<LineBreak />- è¯­è¨€ä¸Žè¾“å…¥æ•°æ®æ”¶é›†
+<LineBreak />- è¯­éŸ³è¯†åˆ«
+<LineBreak />- å¢¨è¿¹ä¸Žæ‰“å­—æ•°æ®æ”¶é›†
+<LineBreak />- è¿œç¨‹ååŠ©
+<LineBreak />- è®¾å¤‡å…ƒæ•°æ®æ”¶é›†
+<LineBreak />- Windows å®¢æˆ·ç«¯åŠŸèƒ½
+<LineBreak />- åŽå°åº”ç”¨
 <LineBreak />- Cortana
-<LineBreak />- WiFi ¸ÐÖª¹¦ÄÜ
-<LineBreak />- ×Ô¶¯Î¬»¤
-<LineBreak />- ÍÆËÍ°²×°
-<LineBreak />- ¹ã¸æºÍ´ÙÏúÄÚÈÝ
-<LineBreak />- Ëø¶¨ÆÁÄ»Óë»ÃµÆÆ¬·ÅÓ³
-<LineBreak />- ×Ô¶¯BitlockerÇý¶¯Æ÷¼ÓÃÜ
-<LineBreak />- TCG°²È«Éè±¸¼¤»î
-<LineBreak />- ×Ô¶¯ÖØÆôµÇÂ¼
+<LineBreak />- WiFi æ„ŸçŸ¥åŠŸèƒ½
+<LineBreak />- è‡ªåŠ¨ç»´æŠ¤
+<LineBreak />- æŽ¨é€å®‰è£…
+<LineBreak />- å¹¿å‘Šå’Œä¿ƒé”€å†…å®¹
+<LineBreak />- é”å®šå±å¹•ä¸Žå¹»ç¯ç‰‡æ”¾æ˜ 
+<LineBreak />- è‡ªåŠ¨Bitlockeré©±åŠ¨å™¨åŠ å¯†
+<LineBreak />- TCGå®‰å…¨è®¾å¤‡æ¿€æ´»
+<LineBreak />- è‡ªåŠ¨é‡å¯ç™»å½•
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                     </TextBlock>
                                     <CheckBox x:Name="PrivacyCheckBox"
-                             Content="ÒþË½ÉèÖÃ"
+                             Content="éšç§è®¾ç½®"
                              Style="{DynamicResource CustomCheckBoxStyle}"
                              FontSize="14"/>
                                 </StackPanel>
@@ -10191,25 +10191,25 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                 - ÆôÓÃÓÎÏ·Ä£Ê½
-<LineBreak />- ½ûÓÃÓÎÏ·À¸ºÍÓÎÏ·DVR
-<LineBreak />- ½ûÓÃÍ¨¹ý¿ØÖÆÆ÷´ò¿ªXbox Game Bar
-<LineBreak />- ½ûÓÃ¿É±äË¢ÐÂÂÊ
-<LineBreak />- ÆôÓÃ´°¿Ú»¯ÓÎÏ·ÓÅ»¯
-<LineBreak />- ÆôÓÃ¾ÉNVIDIAÈñ»¯¹¦ÄÜ
-<LineBreak />- Ìá¸ß¶àÃ½ÌåÓ¦ÓÃ³ÌÐòµÄÏµÍ³ÏìÓ¦ËÙ¶È
-<LineBreak />- ÓÅ»¯ÍøÂçÒÔÌáÉýÓÎÏ·ÐÔÄÜ
-<LineBreak />- ÌáÉý CPU &amp; GPU ÓÎÏ·ÓÅÏÈ¼¶
-<LineBreak />- ½«ÓÎÏ·µÄµ÷¶ÈÀà±ðÉèÖÃÎª¸ß
-<LineBreak />- ÆôÓÃÓ²¼þ¼ÓËÙµÄGPUµ÷¶È
-<LineBreak />- µ÷ÕûWin32ÓÅÏÈ¼¶·ÖÀëÒÔ»ñµÃ×î¼ÑÐÔÄÜ
-<LineBreak />- ½ûÓÃ´æ´¢¸ÐÖª
+                                 - å¯ç”¨æ¸¸æˆæ¨¡å¼
+<LineBreak />- ç¦ç”¨æ¸¸æˆæ å’Œæ¸¸æˆDVR
+<LineBreak />- ç¦ç”¨é€šè¿‡æŽ§åˆ¶å™¨æ‰“å¼€Xbox Game Bar
+<LineBreak />- ç¦ç”¨å¯å˜åˆ·æ–°çŽ‡
+<LineBreak />- å¯ç”¨çª—å£åŒ–æ¸¸æˆä¼˜åŒ–
+<LineBreak />- å¯ç”¨æ—§NVIDIAé”åŒ–åŠŸèƒ½
+<LineBreak />- æé«˜å¤šåª’ä½“åº”ç”¨ç¨‹åºçš„ç³»ç»Ÿå“åº”é€Ÿåº¦
+<LineBreak />- ä¼˜åŒ–ç½‘ç»œä»¥æå‡æ¸¸æˆæ€§èƒ½
+<LineBreak />- æå‡ CPU &amp; GPU æ¸¸æˆä¼˜å…ˆçº§
+<LineBreak />- å°†æ¸¸æˆçš„è°ƒåº¦ç±»åˆ«è®¾ç½®ä¸ºé«˜
+<LineBreak />- å¯ç”¨ç¡¬ä»¶åŠ é€Ÿçš„GPUè°ƒåº¦
+<LineBreak />- è°ƒæ•´Win32ä¼˜å…ˆçº§åˆ†ç¦»ä»¥èŽ·å¾—æœ€ä½³æ€§èƒ½
+<LineBreak />- ç¦ç”¨å­˜å‚¨æ„ŸçŸ¥
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                     </TextBlock>
                                     <CheckBox x:Name="GamingOptimizationsCheckBox"
-                             Content="ÓÎÏ·ÓÅ»¯"
+                             Content="æ¸¸æˆä¼˜åŒ–"
                              Style="{DynamicResource CustomCheckBoxStyle}"
                              FontSize="14"/>
                                 </StackPanel>
@@ -10222,20 +10222,20 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                    ½ûÓÃ:
-<LineBreak />- ×Ô¶¯¸üÐÂ
-<LineBreak />- ÑÓ³Ù¹¦ÄÜ¸üÐÂ£¨365Ìì£©
-<LineBreak />- ÑÓ³Ù°²È«¸üÐÂ (7 Ìì)
-<LineBreak />- ´ÓWin10×Ô¶¯Éý¼¶µ½Win11
-<LineBreak />- ´«µÝÓÅ»¯
-<LineBreak />- ÉÌµêÓ¦ÓÃ×Ô¶¯¸üÐÂ
-<LineBreak />- Î´Ê¹ÓÃµÄÓ¦ÓÃ³ÌÐò×Ô¶¯¹éµµ
+                                    ç¦ç”¨:
+<LineBreak />- è‡ªåŠ¨æ›´æ–°
+<LineBreak />- å»¶è¿ŸåŠŸèƒ½æ›´æ–°ï¼ˆ365å¤©ï¼‰
+<LineBreak />- å»¶è¿Ÿå®‰å…¨æ›´æ–° (7 å¤©)
+<LineBreak />- ä»ŽWin10è‡ªåŠ¨å‡çº§åˆ°Win11
+<LineBreak />- ä¼ é€’ä¼˜åŒ–
+<LineBreak />- å•†åº—åº”ç”¨è‡ªåŠ¨æ›´æ–°
+<LineBreak />- æœªä½¿ç”¨çš„åº”ç”¨ç¨‹åºè‡ªåŠ¨å½’æ¡£
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                     </TextBlock>
                                     <CheckBox x:Name="WindowsUpdatesCheckBox"
-                             Content="Windows ¸üÐÂ"
+                             Content="Windows æ›´æ–°"
                              Style="{DynamicResource CustomCheckBoxStyle}"
                              FontSize="14"/>
                                 </StackPanel>
@@ -10248,22 +10248,22 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                    - ÖÕ¼«µçÔ´¼Æ»®£¨×î´óÐÔÄÜ£©
-<LineBreak />- ½ûÓÃÐÝÃß¡¢Ë¯ÃßºÍ¿ìËÙÆô¶¯
-<LineBreak />- ½âËøCPUºËÐÄ
-<LineBreak />- ½ûÓÃµçÔ´½ÚÁ÷
-<LineBreak />- ½ûÓÃUSBÑ¡ÔñÐÔ¹ÒÆð
-<LineBreak />- PCI ExpressÁ´Â·×´Ì¬µçÔ´¹ÜÀí¹Ø±Õ
-<LineBreak />- ´¦ÀíÆ÷×´Ì¬Ê¼ÖÕÎª100%£¨ÎÞ¿ÕÏÐ£©
-<LineBreak />- ÏÔÊ¾Ê¼ÖÕ¿ªÆô£¬ÁÁ¶ÈÎª100%
-<LineBreak />- ½ûÓÃµç³ØÊ¡µçÄ£Ê½
-<LineBreak />- ½ûÓÃ¹Ø¼üµç³Ø²Ù×÷
+                                    - ç»ˆæžç”µæºè®¡åˆ’ï¼ˆæœ€å¤§æ€§èƒ½ï¼‰
+<LineBreak />- ç¦ç”¨ä¼‘çœ ã€ç¡çœ å’Œå¿«é€Ÿå¯åŠ¨
+<LineBreak />- è§£é”CPUæ ¸å¿ƒ
+<LineBreak />- ç¦ç”¨ç”µæºèŠ‚æµ
+<LineBreak />- ç¦ç”¨USBé€‰æ‹©æ€§æŒ‚èµ·
+<LineBreak />- PCI Expressé“¾è·¯çŠ¶æ€ç”µæºç®¡ç†å…³é—­
+<LineBreak />- å¤„ç†å™¨çŠ¶æ€å§‹ç»ˆä¸º100%ï¼ˆæ— ç©ºé—²ï¼‰
+<LineBreak />- æ˜¾ç¤ºå§‹ç»ˆå¼€å¯ï¼Œäº®åº¦ä¸º100%
+<LineBreak />- ç¦ç”¨ç”µæ± çœç”µæ¨¡å¼
+<LineBreak />- ç¦ç”¨å…³é”®ç”µæ± æ“ä½œ
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                     </TextBlock>
                                     <CheckBox x:Name="PowerSettingsCheckBox"
-                             Content="µçÔ´ÉèÖÃ"
+                             Content="ç”µæºè®¾ç½®"
                              Style="{DynamicResource CustomCheckBoxStyle}"
                              FontSize="14"/>
                                 </StackPanel>
@@ -10276,71 +10276,71 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-ÅäÖÃ:
-<LineBreak />- Windows ¼æÈÝÐÔÆÀ¹À³ÌÐò
-<LineBreak />- ³ÌÐò¼æÈÝÐÔÊý¾Ý¿â¸üÐÂÆ÷
-<LineBreak />- Í¬²½Êý¾Ý¿âºÏ²¢ÈÎÎñ
-<LineBreak />- ¿Í»§ÌåÑé¸Ä½ø¼Æ»®ÕûºÏ
-<LineBreak />- USB¿Í»§ÌåÑé¸Ä½ø
-<LineBreak />- Ê¹ÓÃÊý¾ÝË¢ÐÂ
-<LineBreak />- Ê¹ÓÃÊý¾Ý±¨¸æ
-<LineBreak />- Windows ·´À¡¿Í»§¶Ë
-<LineBreak />- Windows ·´À¡¿Í»§¶ËÏÂÔØ
-<LineBreak />- µØÍ¼Í¨Öª
-<LineBreak />- µØÍ¼¸üÐÂÈÎÎñ
-<LineBreak />- ¼ÒÍ¥°²È«¼à¿Ø
-<LineBreak />- ¼ÒÍ¥°²È«Ë¢ÐÂ
-<LineBreak />- Windows ËÑË÷Ë÷ÒýÎ¬»¤
-<LineBreak />- Xbox ÓÎÏ·±£´æÈÎÎñ
-<LineBreak />- ¹¤×÷ÎÄ¼þ¼ÐµÇÂ¼Í¬²½
-<LineBreak />- ¹¤×÷ÎÄ¼þ¼ÐÎ¬»¤
-<LineBreak />- Windows Ã½Ìå¿â¸üÐÂ
-<LineBreak />- ÎÞÏß¹ãÓòÍøÍ¨Öª
-<LineBreak />- ÎÞÏß¹ãÓòÍø·¢ÏÖ
-<LineBreak />- Windows ´íÎó±¨¸æ
-<LineBreak />- Office ×Ô¶¯¸üÐÂ
-<LineBreak />- Office ClickToRun ¼à¿Ø
-<LineBreak />- Office ÁÙÊ±´úÀí»ØÍË
-<LineBreak />- Office ÁÙÊ±´úÀíµÇÂ¼
-<LineBreak />- Windows Õï¶ÏÈÎÎñ
-<LineBreak />- ´ÅÅÌÕï¶ÏÊý¾ÝÊÕ¼¯Æ÷
-<LineBreak />- ÄÚ´æÕï¶ÏÊÂ¼þ
-<LineBreak />- µçÔ´Ð§ÂÊ·ÖÎö
-<LineBreak />- ´ÅÅÌ¼ì²é´úÀí
-<LineBreak />- ¼Æ»®µÄ´ÅÅÌËéÆ¬ÕûÀí
-<LineBreak />- Ô¶³ÌÐ­ÖúÈÎÎñ
-<LineBreak />- Ç¿ÖÆÊ±¼äÍ¬²½
-<LineBreak />- ¸üÐÂ²ßÂÔ±¨¸æ
-<LineBreak />- Windows ¸üÐÂÉ¨Ãè
-<LineBreak />- Windows ¸üÐÂ¼Æ»®Æô¶¯
-<LineBreak />- Windows ¸üÐÂÐÞ¸´
-<LineBreak />- Windows ¸üÐÂÉ¨ÃèÆ÷
-<LineBreak />- ÓÃ»§¸üÐÂÉ¨ÃèÆ÷
-<LineBreak />- ´ÅÅÌÕ¼ÓÃÕï¶Ï
-<LineBreak />- ÎÄ¼þÀúÊ·¼ÇÂ¼Î¬»¤
-<LineBreak />- Windows SQM ÈÎÎñ
-<LineBreak />- ³ÌÐòÊý¾Ý¸üÐÂÆ÷
-<LineBreak />- ±¸·ÝÈÎÎñ
-<LineBreak />- Î»ÖÃ¶Ô»°¿ò
-<LineBreak />- Î»ÖÃÍ¨Öª
-<LineBreak />- ÒÆ¶¯¿í´ø½âÎö
-<LineBreak />- Éè±¸ÔªÊý¾ÝË¢ÐÂ
-<LineBreak />- ÓïÑÔÉèÖÃÍ¬²½
-<LineBreak />- ÁãÊÛÑÝÊ¾ÇåÀí
-<LineBreak />- ÍÆËÍ°²×°µÇÂ¼¼ì²é
-<LineBreak />- ÍÆËÍ°²×°×¢²á
-<LineBreak />- SmartScreen ÌØ¶¨ÈÎÎñ
-<LineBreak />- Æô¶¯Ó¦ÓÃ³ÌÐòÈÎÎñ
-<LineBreak />- ÔÆÌåÑé¶ÔÏó
-<LineBreak />- Windows Hello ÇåÀí
-<LineBreak />- Ðí¿É»ñÈ¡ÈÎÎñ
-<LineBreak />- ¸üÐÂÍ¨Öª¹ÜÀíÆ÷
+é…ç½®:
+<LineBreak />- Windows å…¼å®¹æ€§è¯„ä¼°ç¨‹åº
+<LineBreak />- ç¨‹åºå…¼å®¹æ€§æ•°æ®åº“æ›´æ–°å™¨
+<LineBreak />- åŒæ­¥æ•°æ®åº“åˆå¹¶ä»»åŠ¡
+<LineBreak />- å®¢æˆ·ä½“éªŒæ”¹è¿›è®¡åˆ’æ•´åˆ
+<LineBreak />- USBå®¢æˆ·ä½“éªŒæ”¹è¿›
+<LineBreak />- ä½¿ç”¨æ•°æ®åˆ·æ–°
+<LineBreak />- ä½¿ç”¨æ•°æ®æŠ¥å‘Š
+<LineBreak />- Windows åé¦ˆå®¢æˆ·ç«¯
+<LineBreak />- Windows åé¦ˆå®¢æˆ·ç«¯ä¸‹è½½
+<LineBreak />- åœ°å›¾é€šçŸ¥
+<LineBreak />- åœ°å›¾æ›´æ–°ä»»åŠ¡
+<LineBreak />- å®¶åº­å®‰å…¨ç›‘æŽ§
+<LineBreak />- å®¶åº­å®‰å…¨åˆ·æ–°
+<LineBreak />- Windows æœç´¢ç´¢å¼•ç»´æŠ¤
+<LineBreak />- Xbox æ¸¸æˆä¿å­˜ä»»åŠ¡
+<LineBreak />- å·¥ä½œæ–‡ä»¶å¤¹ç™»å½•åŒæ­¥
+<LineBreak />- å·¥ä½œæ–‡ä»¶å¤¹ç»´æŠ¤
+<LineBreak />- Windows åª’ä½“åº“æ›´æ–°
+<LineBreak />- æ— çº¿å¹¿åŸŸç½‘é€šçŸ¥
+<LineBreak />- æ— çº¿å¹¿åŸŸç½‘å‘çŽ°
+<LineBreak />- Windows é”™è¯¯æŠ¥å‘Š
+<LineBreak />- Office è‡ªåŠ¨æ›´æ–°
+<LineBreak />- Office ClickToRun ç›‘æŽ§
+<LineBreak />- Office ä¸´æ—¶ä»£ç†å›žé€€
+<LineBreak />- Office ä¸´æ—¶ä»£ç†ç™»å½•
+<LineBreak />- Windows è¯Šæ–­ä»»åŠ¡
+<LineBreak />- ç£ç›˜è¯Šæ–­æ•°æ®æ”¶é›†å™¨
+<LineBreak />- å†…å­˜è¯Šæ–­äº‹ä»¶
+<LineBreak />- ç”µæºæ•ˆçŽ‡åˆ†æž
+<LineBreak />- ç£ç›˜æ£€æŸ¥ä»£ç†
+<LineBreak />- è®¡åˆ’çš„ç£ç›˜ç¢Žç‰‡æ•´ç†
+<LineBreak />- è¿œç¨‹ååŠ©ä»»åŠ¡
+<LineBreak />- å¼ºåˆ¶æ—¶é—´åŒæ­¥
+<LineBreak />- æ›´æ–°ç­–ç•¥æŠ¥å‘Š
+<LineBreak />- Windows æ›´æ–°æ‰«æ
+<LineBreak />- Windows æ›´æ–°è®¡åˆ’å¯åŠ¨
+<LineBreak />- Windows æ›´æ–°ä¿®å¤
+<LineBreak />- Windows æ›´æ–°æ‰«æå™¨
+<LineBreak />- ç”¨æˆ·æ›´æ–°æ‰«æå™¨
+<LineBreak />- ç£ç›˜å ç”¨è¯Šæ–­
+<LineBreak />- æ–‡ä»¶åŽ†å²è®°å½•ç»´æŠ¤
+<LineBreak />- Windows SQM ä»»åŠ¡
+<LineBreak />- ç¨‹åºæ•°æ®æ›´æ–°å™¨
+<LineBreak />- å¤‡ä»½ä»»åŠ¡
+<LineBreak />- ä½ç½®å¯¹è¯æ¡†
+<LineBreak />- ä½ç½®é€šçŸ¥
+<LineBreak />- ç§»åŠ¨å®½å¸¦è§£æž
+<LineBreak />- è®¾å¤‡å…ƒæ•°æ®åˆ·æ–°
+<LineBreak />- è¯­è¨€è®¾ç½®åŒæ­¥
+<LineBreak />- é›¶å”®æ¼”ç¤ºæ¸…ç†
+<LineBreak />- æŽ¨é€å®‰è£…ç™»å½•æ£€æŸ¥
+<LineBreak />- æŽ¨é€å®‰è£…æ³¨å†Œ
+<LineBreak />- SmartScreen ç‰¹å®šä»»åŠ¡
+<LineBreak />- å¯åŠ¨åº”ç”¨ç¨‹åºä»»åŠ¡
+<LineBreak />- äº‘ä½“éªŒå¯¹è±¡
+<LineBreak />- Windows Hello æ¸…ç†
+<LineBreak />- è®¸å¯èŽ·å–ä»»åŠ¡
+<LineBreak />- æ›´æ–°é€šçŸ¥ç®¡ç†å™¨
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                     </TextBlock>
                                     <CheckBox x:Name="TasksCheckBox"
-                             Content="¼Æ»®ÈÎÎñ"
+                             Content="è®¡åˆ’ä»»åŠ¡"
                              Style="{DynamicResource CustomCheckBoxStyle}"
                              FontSize="14"/>
                                 </StackPanel>
@@ -10353,28 +10353,28 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-½ûÓÃ:
-<LineBreak />- AllJoynÂ·ÓÉÆ÷·þÎñ
-<LineBreak />- Ó¦ÓÃ³ÌÐòÐéÄâ»¯¿Í»§¶Ë
-<LineBreak />- ·ÖÅäµÄ·ÃÎÊ¹ÜÀíÆ÷·þÎñ
-<LineBreak />- Á¬½ÓµÄÓÃ»§ÌåÑéºÍÒ£²â
-<LineBreak />- ¶Ô»°×èÖ¹·þÎñ
-<LineBreak />- Net.Tcp ¶Ë¿Ú¹²Ïí·þÎñ
-<LineBreak />- Ô¶³Ì·ÃÎÊÁ¬½Ó¹ÜÀíÆ÷
-<LineBreak />- Ô¶³Ì×¢²á±í·þÎñ
-<LineBreak />- ÓÃ»§ÌåÑéÐéÄâ»¯·þÎñ
-<LineBreak />- ¹²Ïí±£»¤·ÃÎÊ¹ÜÀíÆ÷
-<LineBreak />- OpenSSH ÈÏÖ¤´úÀí
-<LineBreak />- ×Ô¶¯Ê±Çø¸üÐÂÆ÷
-<LineBreak />- Î¢Èí¸üÐÂ½¡¿µ·þÎñ
+ç¦ç”¨:
+<LineBreak />- AllJoynè·¯ç”±å™¨æœåŠ¡
+<LineBreak />- åº”ç”¨ç¨‹åºè™šæ‹ŸåŒ–å®¢æˆ·ç«¯
+<LineBreak />- åˆ†é…çš„è®¿é—®ç®¡ç†å™¨æœåŠ¡
+<LineBreak />- è¿žæŽ¥çš„ç”¨æˆ·ä½“éªŒå’Œé¥æµ‹
+<LineBreak />- å¯¹è¯é˜»æ­¢æœåŠ¡
+<LineBreak />- Net.Tcp ç«¯å£å…±äº«æœåŠ¡
+<LineBreak />- è¿œç¨‹è®¿é—®è¿žæŽ¥ç®¡ç†å™¨
+<LineBreak />- è¿œç¨‹æ³¨å†Œè¡¨æœåŠ¡
+<LineBreak />- ç”¨æˆ·ä½“éªŒè™šæ‹ŸåŒ–æœåŠ¡
+<LineBreak />- å…±äº«ä¿æŠ¤è®¿é—®ç®¡ç†å™¨
+<LineBreak />- OpenSSH è®¤è¯ä»£ç†
+<LineBreak />- è‡ªåŠ¨æ—¶åŒºæ›´æ–°å™¨
+<LineBreak />- å¾®è½¯æ›´æ–°å¥åº·æœåŠ¡
 <LineBreak />
-<LineBreak />½«ÆäËû·þÎñÉèÖÃÎªÔÊÐíµÄ¡°ÊÖ¶¯¡±¡£
+<LineBreak />å°†å…¶ä»–æœåŠ¡è®¾ç½®ä¸ºå…è®¸çš„â€œæ‰‹åŠ¨â€ã€‚
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                     </TextBlock>
                                     <CheckBox x:Name="ServicesCheckBox"
-                             Content="Windows ·þÎñ"
+                             Content="Windows æœåŠ¡"
                              Style="{DynamicResource CustomCheckBoxStyle}"
                              FontSize="14"/>
                                 </StackPanel>
@@ -10390,11 +10390,11 @@ Margin="27,0,0,0"/>
                 <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                     <TextBlock Width="80" Height="70" Margin="0,0,0,0" DockPanel.Dock="Left" FontFamily="Segoe UI Emoji" FontSize="60" Foreground="{DynamicResource PrimaryTextColor}" Text="&#x1F3A8;"  LineHeight="70" LineStackingStrategy="BlockLineHeight" />
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Height="35" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Text="×Ô¶¨Òå" />
+                        <TextBlock Height="35" VerticalAlignment="Top" FontFamily="Microsoft YaHei UI" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" Text="è‡ªå®šä¹‰" />
                         <DockPanel LastChildFill="False" Width="861">
-                            <TextBlock x:Name="CustomizeStatusText" Height="22" DockPanel.Dock="Left" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei UI" FontSize="14" Foreground="DarkGray" Text="×Ô¶¨ÒåÏµÍ³µÄÍâ¹ÛºÍÐÐÎª" />
-                            <Button x:Name="CustomizeDefaultsButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="Ä¬ÈÏ" Width="80" Height="30" Margin="0,0,5,0"/>
-                            <Button x:Name="CustomizeApplyButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="Ó¦ÓÃ" Width="80" Height="30" Margin="0,0,10,0"/>
+                            <TextBlock x:Name="CustomizeStatusText" Height="22" DockPanel.Dock="Left" VerticalAlignment="Bottom" FontFamily="Microsoft YaHei UI" FontSize="14" Foreground="DarkGray" Text="è‡ªå®šä¹‰ç³»ç»Ÿçš„å¤–è§‚å’Œè¡Œä¸º" />
+                            <Button x:Name="CustomizeDefaultsButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="é»˜è®¤" Width="80" Height="30" Margin="0,0,5,0"/>
+                            <Button x:Name="CustomizeApplyButton" DockPanel.Dock="Right" Style="{DynamicResource PrimaryButtonStyle}" Content="åº”ç”¨" Width="80" Height="30" Margin="0,0,10,0"/>
                         </DockPanel>
                     </StackPanel>
                 </DockPanel>
@@ -10422,7 +10422,7 @@ Margin="27,0,0,0"/>
             FontSize="20"
             Margin="25,0,0,0" />
                                             <TextBlock 
-            Text="ÉîÉ«Ä£Ê½" 
+            Text="æ·±è‰²æ¨¡å¼" 
             VerticalAlignment="Center" 
             Foreground="{DynamicResource PrimaryTextColor}" 
             FontSize="14" 
@@ -10440,7 +10440,7 @@ Margin="27,0,0,0"/>
                             <Border Background="{DynamicResource ContentSectionBorderBrush}" CornerRadius="5" Margin="5,5,5,5" Effect="{StaticResource LightShadowEffect}">
                                 <StackPanel Orientation="Horizontal" Margin="10">
                                     <CheckBox x:Name="CustomizeSelectAllCheckbox"
-                 Content="Ñ¡ÔñÈ«²¿"
+                 Content="é€‰æ‹©å…¨éƒ¨"
                  Style="{DynamicResource CustomCheckBoxStyle}"
                  FontSize="14"
                  Margin="27,0,0,0"/>
@@ -10453,20 +10453,20 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-- Òþ²ØWindowsÁÄÌìÍ¼±ê
-<LineBreak />- ½ûÓÃÐÂÎÅºÍÐËÈ¤ÐÅÏ¢Á÷
-<LineBreak />- Òþ²Ø¡°Meet Now¡±°´Å¥
-<LineBreak />- Òþ²ØÈÎÎñÊÓÍ¼°´Å¥
-<LineBreak />- ½ûÓÃÏµÍ³ÍÐÅÌ×Ô¶¯Òþ²Ø
-<LineBreak />- Çå³ý³£ÓÃ³ÌÐòÁÐ±í
-<LineBreak />- Òþ²Ø Copilot °´Å¥
-<LineBreak />- ½«ÈÎÎñÀ¸Í¼±ê×ó¶ÔÆë
+- éšè—WindowsèŠå¤©å›¾æ ‡
+<LineBreak />- ç¦ç”¨æ–°é—»å’Œå…´è¶£ä¿¡æ¯æµ
+<LineBreak />- éšè—â€œMeet Nowâ€æŒ‰é’®
+<LineBreak />- éšè—ä»»åŠ¡è§†å›¾æŒ‰é’®
+<LineBreak />- ç¦ç”¨ç³»ç»Ÿæ‰˜ç›˜è‡ªåŠ¨éšè—
+<LineBreak />- æ¸…é™¤å¸¸ç”¨ç¨‹åºåˆ—è¡¨
+<LineBreak />- éšè— Copilot æŒ‰é’®
+<LineBreak />- å°†ä»»åŠ¡æ å›¾æ ‡å·¦å¯¹é½
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="TaskbarCheckBox"
-                                 Content="ÈÎÎñÀ¸"
+                                 Content="ä»»åŠ¡æ "
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10479,14 +10479,14 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                        - ÒÆ³ýËùÓÐ¹Ì¶¨µÄÓ¦ÓÃ£¨Í¼±ê£©
-<LineBreak />- ÉèÖÃ¡°¸ü¶à¹Ì¶¨¡±²¼¾Ö£¨²»ÍÆ¼ö£©
+                                        - ç§»é™¤æ‰€æœ‰å›ºå®šçš„åº”ç”¨ï¼ˆå›¾æ ‡ï¼‰
+<LineBreak />- è®¾ç½®â€œæ›´å¤šå›ºå®šâ€å¸ƒå±€ï¼ˆä¸æŽ¨èï¼‰
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="StartMenuCheckBox"
-                                 Content="¿ªÊ¼²Ëµ¥"
+                                 Content="å¼€å§‹èœå•"
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10499,47 +10499,47 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                        - ÆôÓÃ³¤ÎÄ¼þÂ·¾¶£¨32,767¸ö×Ö·û£©
-<LineBreak />- ½ûÓÃWindows Spotlight±ÚÖ½¹¦ÄÜ
-<LineBreak />- ×èÖ¹¡°ÔÊÐíÎÒµÄ×éÖ¯¹ÜÀíÎÒµÄÉè±¸¡±µ¯³ö´°¿Ú
-<LineBreak />- ÒÆ³ý3D¶ÔÏóºÍ¼ÒÍ¥ÎÄ¼þ¼Ð
-<LineBreak />- ´ò¿ªÎÄ¼þ×ÊÔ´¹ÜÀíÆ÷µ½¡°´ËµçÄÔ¡±
-<LineBreak />- ÏÔÊ¾ÎÄ¼þÀ©Õ¹Ãû
-<LineBreak />- ½ûÓÃÎÄ¼þ¼ÐÌáÊ¾ºÍµ¯³öÃèÊö
-<LineBreak />- ½ûÓÃÔ¤ÀÀ´¦Àí³ÌÐòºÍ×´Ì¬À¸
-<LineBreak />- ½ûÓÃÍ¬²½Ìá¹©³ÌÐòÍ¨Öª
-<LineBreak />- ½ûÓÃ¹²ÏíÏòµ¼
-<LineBreak />- ½ûÓÃÈÎÎñÀ¸¶¯»­
-<LineBreak />- ÏÔÊ¾ËõÂÔÍ¼¶ø²»ÊÇÍ¼±ê
-<LineBreak />- ½ûÓÃ°ëÍ¸Ã÷Ñ¡Ôñ¾ØÐÎ
-<LineBreak />- ½ûÓÃÍ¼±ê±êÇ©ÒõÓ°
-<LineBreak />- ½ûÓÃÕË»§Ïà¹ØÍ¨Öª
-<LineBreak />- ½ûÓÃ¡°¿ªÊ¼¡±ºÍ¡°ÎÄ¼þ×ÊÔ´¹ÜÀíÆ÷¡±ÖÐµÄ×î½ü´ò¿ªµÄÏîÄ¿
-<LineBreak />- ½ûÓÃÌáÊ¾ºÍ¿ì½Ý·½Ê½µÄÍÆ¼ö
-<LineBreak />- ½ûÓÃsnap¸¨ÖúºÍ´°¿Ú¶¯»­
-<LineBreak />- ½« Alt+Tab ÉèÖÃÎª½öÏÔÊ¾´ò¿ªµÄ´°¿Ú
-<LineBreak />- ÔÚ¿ìËÙ·ÃÎÊÖÐÒþ²Ø³£ÓÃÎÄ¼þ¼Ð
-<LineBreak />- ½ûÓÃÔÚ¿ìËÙ·ÃÎÊÖÐÏÔÊ¾À´×Ô Office.com µÄÎÄ¼þ
-<LineBreak />- ÔÚ±êÌâÀ¸ÖÐÆôÓÃÍêÕûÂ·¾¶
-<LineBreak />- ½ûÓÃÔöÇ¿Ö¸Õë¾«¶È£¨Êó±êÐÞ¸´£©
-<LineBreak />- ½«Íâ¹ÛÑ¡ÏîÉèÖÃÎª×Ô¶¨Òå
-<LineBreak />- ½ûÓÃ¶¯»­ºÍÊÓ¾õÐ§¹û
-<LineBreak />- ÆôÓÃÆ½»¬ÆÁÄ»×ÖÌå±ßÔµ
-<LineBreak />- ½ûÓÃ²Ëµ¥ÏÔÊ¾ÑÓ³Ù
-<LineBreak />- ½ûÓÃ×Ô¶¯´óÐ´ºÍ°´¼üÉùÒô
-<LineBreak />- ´Óµ¼º½´°¸ñÖÐÉ¾³ýÍ¼¿â
-<LineBreak />- »Ö¸´¾­µäÉÏÏÂÎÄ²Ëµ¥
-<LineBreak />- ½ûÓÃÆ½°åÄ£Ê½²¢Ê¼ÖÕÊ¹ÓÃ×ÀÃæÄ£Ê½
-<LineBreak />- ½ûÓÃÓïÒôÊäÈëÂó¿Ë·ç°´Å¥
-<LineBreak />- ½ûÓÃÊäÈëµ÷²é
-<LineBreak />- ½ûÓÃ¼ôÌù°å½¨Òé²Ù×÷
-<LineBreak />- ½ûÓÃ Windows ¹ÜÀíÄ¬ÈÏ´òÓ¡»ú
+                                        - å¯ç”¨é•¿æ–‡ä»¶è·¯å¾„ï¼ˆ32,767ä¸ªå­—ç¬¦ï¼‰
+<LineBreak />- ç¦ç”¨Windows Spotlightå£çº¸åŠŸèƒ½
+<LineBreak />- é˜»æ­¢â€œå…è®¸æˆ‘çš„ç»„ç»‡ç®¡ç†æˆ‘çš„è®¾å¤‡â€å¼¹å‡ºçª—å£
+<LineBreak />- ç§»é™¤3Då¯¹è±¡å’Œå®¶åº­æ–‡ä»¶å¤¹
+<LineBreak />- æ‰“å¼€æ–‡ä»¶èµ„æºç®¡ç†å™¨åˆ°â€œæ­¤ç”µè„‘â€
+<LineBreak />- æ˜¾ç¤ºæ–‡ä»¶æ‰©å±•å
+<LineBreak />- ç¦ç”¨æ–‡ä»¶å¤¹æç¤ºå’Œå¼¹å‡ºæè¿°
+<LineBreak />- ç¦ç”¨é¢„è§ˆå¤„ç†ç¨‹åºå’ŒçŠ¶æ€æ 
+<LineBreak />- ç¦ç”¨åŒæ­¥æä¾›ç¨‹åºé€šçŸ¥
+<LineBreak />- ç¦ç”¨å…±äº«å‘å¯¼
+<LineBreak />- ç¦ç”¨ä»»åŠ¡æ åŠ¨ç”»
+<LineBreak />- æ˜¾ç¤ºç¼©ç•¥å›¾è€Œä¸æ˜¯å›¾æ ‡
+<LineBreak />- ç¦ç”¨åŠé€æ˜Žé€‰æ‹©çŸ©å½¢
+<LineBreak />- ç¦ç”¨å›¾æ ‡æ ‡ç­¾é˜´å½±
+<LineBreak />- ç¦ç”¨è´¦æˆ·ç›¸å…³é€šçŸ¥
+<LineBreak />- ç¦ç”¨â€œå¼€å§‹â€å’Œâ€œæ–‡ä»¶èµ„æºç®¡ç†å™¨â€ä¸­çš„æœ€è¿‘æ‰“å¼€çš„é¡¹ç›®
+<LineBreak />- ç¦ç”¨æç¤ºå’Œå¿«æ·æ–¹å¼çš„æŽ¨è
+<LineBreak />- ç¦ç”¨snapè¾…åŠ©å’Œçª—å£åŠ¨ç”»
+<LineBreak />- å°† Alt+Tab è®¾ç½®ä¸ºä»…æ˜¾ç¤ºæ‰“å¼€çš„çª—å£
+<LineBreak />- åœ¨å¿«é€Ÿè®¿é—®ä¸­éšè—å¸¸ç”¨æ–‡ä»¶å¤¹
+<LineBreak />- ç¦ç”¨åœ¨å¿«é€Ÿè®¿é—®ä¸­æ˜¾ç¤ºæ¥è‡ª Office.com çš„æ–‡ä»¶
+<LineBreak />- åœ¨æ ‡é¢˜æ ä¸­å¯ç”¨å®Œæ•´è·¯å¾„
+<LineBreak />- ç¦ç”¨å¢žå¼ºæŒ‡é’ˆç²¾åº¦ï¼ˆé¼ æ ‡ä¿®å¤ï¼‰
+<LineBreak />- å°†å¤–è§‚é€‰é¡¹è®¾ç½®ä¸ºè‡ªå®šä¹‰
+<LineBreak />- ç¦ç”¨åŠ¨ç”»å’Œè§†è§‰æ•ˆæžœ
+<LineBreak />- å¯ç”¨å¹³æ»‘å±å¹•å­—ä½“è¾¹ç¼˜
+<LineBreak />- ç¦ç”¨èœå•æ˜¾ç¤ºå»¶è¿Ÿ
+<LineBreak />- ç¦ç”¨è‡ªåŠ¨å¤§å†™å’ŒæŒ‰é”®å£°éŸ³
+<LineBreak />- ä»Žå¯¼èˆªçª—æ ¼ä¸­åˆ é™¤å›¾åº“
+<LineBreak />- æ¢å¤ç»å…¸ä¸Šä¸‹æ–‡èœå•
+<LineBreak />- ç¦ç”¨å¹³æ¿æ¨¡å¼å¹¶å§‹ç»ˆä½¿ç”¨æ¡Œé¢æ¨¡å¼
+<LineBreak />- ç¦ç”¨è¯­éŸ³è¾“å…¥éº¦å…‹é£ŽæŒ‰é’®
+<LineBreak />- ç¦ç”¨è¾“å…¥è°ƒæŸ¥
+<LineBreak />- ç¦ç”¨å‰ªè´´æ¿å»ºè®®æ“ä½œ
+<LineBreak />- ç¦ç”¨ Windows ç®¡ç†é»˜è®¤æ‰“å°æœº
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="ExplorerCheckBox"
-                                 Content="×ÊÔ´¹ÜÀíÆ÷"
+                                 Content="èµ„æºç®¡ç†å™¨"
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10552,20 +10552,20 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                        ½ûÓÃ:
-<LineBreak />- Í¨Öª£¨°üÀ¨ËøÆÁ£©
-<LineBreak />- Í¨ÖªÉùÒô
-<LineBreak />- °²È«ºÍÎ¬»¤Í¨Öª
-<LineBreak />- ÉèÖÃÓ¦ÓÃ³ÌÐòÍ¨Öª
-<LineBreak />- ·ÃÎÊÈ¨ÏÞÍ¨Öª
-<LineBreak />- Æô¶¯Ó¦ÓÃ³ÌÐòÍ¨Öª
-<LineBreak />- ÏÄÁîÊ±±ä¸üÍ¨Öª
+                                        ç¦ç”¨:
+<LineBreak />- é€šçŸ¥ï¼ˆåŒ…æ‹¬é”å±ï¼‰
+<LineBreak />- é€šçŸ¥å£°éŸ³
+<LineBreak />- å®‰å…¨å’Œç»´æŠ¤é€šçŸ¥
+<LineBreak />- è®¾ç½®åº”ç”¨ç¨‹åºé€šçŸ¥
+<LineBreak />- è®¿é—®æƒé™é€šçŸ¥
+<LineBreak />- å¯åŠ¨åº”ç”¨ç¨‹åºé€šçŸ¥
+<LineBreak />- å¤ä»¤æ—¶å˜æ›´é€šçŸ¥
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="NotificationsCheckBox"
-                                 Content="Í¨Öª"
+                                 Content="é€šçŸ¥"
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10578,17 +10578,17 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                        ½ûÓÃ: 
-<LineBreak />- ¿ª»úÒôÐ§
-<LineBreak />- ÒôÆµ¼ì²é
-<LineBreak />- ËùÓÐÓ¦ÓÃµÄÓïÒô¼¤»î
-<LineBreak />- ÉÏ´ÎÊ¹ÓÃµÄÓïÒô¼¤»îÉèÖÃ
+                                        ç¦ç”¨: 
+<LineBreak />- å¼€æœºéŸ³æ•ˆ
+<LineBreak />- éŸ³é¢‘æ£€æŸ¥
+<LineBreak />- æ‰€æœ‰åº”ç”¨çš„è¯­éŸ³æ¿€æ´»
+<LineBreak />- ä¸Šæ¬¡ä½¿ç”¨çš„è¯­éŸ³æ¿€æ´»è®¾ç½®
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="SoundCheckBox"
-                                 Content="ÉùÒô"
+                                 Content="å£°éŸ³"
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10601,22 +10601,22 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                        - ½ûÓÃ×ÔÎÒÓïÒôºÍ×ÔÎÒÉ¨Ãè¹¦ÄÜ
-<LineBreak />- ½ûÓÃ¼¤»îºÍ¾¯¸æÉùÒô
-<LineBreak />- ÅäÖÃ¸ß¶Ô±È¶ÈÉèÖÃ
-<LineBreak />- ÅäÖÃ¼üÅÌÏìÓ¦ÉèÖÃ
-<LineBreak />- ÉèÖÃ×Ô¶¯ÖØ¸´ÂÊºÍÑÓ³Ù
-<LineBreak />- ÅäÖÃÊó±ê¼üÉèÖÃºÍËÙ¶È
-<LineBreak />- ÅäÖÃÕ³ÖÍ¼üºÍÇÐ»»¼ü
-<LineBreak />- ½ûÓÃÉùÒô¾¯±¨Ð§¹û
-<LineBreak />- ½ûÓÃ¸¨Öú¹¤¾ßµÄ×Ô¶¯Æô¶¯
-<LineBreak />- ½ûÓÃÆÁÄ»·Å´ó¾µ¹¦ÄÜ
+                                        - ç¦ç”¨è‡ªæˆ‘è¯­éŸ³å’Œè‡ªæˆ‘æ‰«æåŠŸèƒ½
+<LineBreak />- ç¦ç”¨æ¿€æ´»å’Œè­¦å‘Šå£°éŸ³
+<LineBreak />- é…ç½®é«˜å¯¹æ¯”åº¦è®¾ç½®
+<LineBreak />- é…ç½®é”®ç›˜å“åº”è®¾ç½®
+<LineBreak />- è®¾ç½®è‡ªåŠ¨é‡å¤çŽ‡å’Œå»¶è¿Ÿ
+<LineBreak />- é…ç½®é¼ æ ‡é”®è®¾ç½®å’Œé€Ÿåº¦
+<LineBreak />- é…ç½®ç²˜æ»žé”®å’Œåˆ‡æ¢é”®
+<LineBreak />- ç¦ç”¨å£°éŸ³è­¦æŠ¥æ•ˆæžœ
+<LineBreak />- ç¦ç”¨è¾…åŠ©å·¥å…·çš„è‡ªåŠ¨å¯åŠ¨
+<LineBreak />- ç¦ç”¨å±å¹•æ”¾å¤§é•œåŠŸèƒ½
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="AccessibilityCheckBox"
-                                 Content="¸¨Öú¹¦ÄÜ"
+                                 Content="è¾…åŠ©åŠŸèƒ½"
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10629,18 +10629,18 @@ Margin="27,0,0,0"/>
                                         <TextBlock.ToolTip>
                                             <ToolTip Style="{DynamicResource CustomTooltipStyle}" FontFamily="Microsoft YaHei UI">
                                                 <TextBlock>
-                                        ½ûÓÃ: 
-<LineBreak />- ËÑË÷ÀúÊ· &amp; ÁÁµã
-<LineBreak />- °²È«ËÑË÷
-<LineBreak />- ÔÆÄÚÈÝËÑË÷ÊÊÓÃÓÚ¹¤×÷/Ñ§Ð£ÕË»§
-<LineBreak />- ÔÆÄÚÈÝËÑË÷ÊÊÓÃÓÚ Microsoft ÕÊ»§
-<LineBreak />- ½ûÓÃ¿ªÊ¼²Ëµ¥ÖÐµÄÍøÂçËÑË÷
+                                        ç¦ç”¨: 
+<LineBreak />- æœç´¢åŽ†å² &amp; äº®ç‚¹
+<LineBreak />- å®‰å…¨æœç´¢
+<LineBreak />- äº‘å†…å®¹æœç´¢é€‚ç”¨äºŽå·¥ä½œ/å­¦æ ¡è´¦æˆ·
+<LineBreak />- äº‘å†…å®¹æœç´¢é€‚ç”¨äºŽ Microsoft å¸æˆ·
+<LineBreak />- ç¦ç”¨å¼€å§‹èœå•ä¸­çš„ç½‘ç»œæœç´¢
                                                 </TextBlock>
                                             </ToolTip>
                                         </TextBlock.ToolTip>
                         </TextBlock>
                                     <CheckBox x:Name="SearchCheckBox"
-                                 Content="ËÑË÷"
+                                 Content="æœç´¢"
                                  Style="{DynamicResource CustomCheckBoxStyle}"
                                  FontSize="14"/>
                                 </StackPanel>
@@ -10679,7 +10679,7 @@ Margin="27,0,0,0"/>
                 FontSize="28"
                 FontWeight="Bold"
                 Foreground="{DynamicResource PrimaryTextColor}"
-                Text="¹ØÓÚ" />
+                Text="å…³äºŽ" />
                         <TextBlock
                 x:Name="AboutStatusText"
                 Height="22"
@@ -10688,7 +10688,7 @@ Margin="27,0,0,0"/>
                 FontFamily="Microsoft YaHei UI"
                 FontSize="14"
                 Foreground="DarkGray"
-                Text="ÁË½â¸ü¶à¹ØÓÚWinhanceµÄÐÅÏ¢" />
+                Text="äº†è§£æ›´å¤šå…³äºŽWinhanceçš„ä¿¡æ¯" />
                     </StackPanel>
                 </DockPanel>
                 <!-- Main Content -->
@@ -10711,34 +10711,34 @@ Margin="27,0,0,0"/>
     FontSize="14"
     Foreground="{DynamicResource PrimaryTextColor}"
     Margin="10,0,0,10">
-    <Run Text="Winhance ÊÇÒ»¸ö PowerShell GUI Ó¦ÓÃ³ÌÐò£¬Ö¼ÔÚÓÅ»¯ºÍ×Ô¶¨Òå Windows 10 ºÍ 11 ÏµÍ³¡£" />
+    <Run Text="Winhance æ˜¯ä¸€ä¸ª PowerShell GUI åº”ç”¨ç¨‹åºï¼Œæ—¨åœ¨ä¼˜åŒ–å’Œè‡ªå®šä¹‰ Windows 10 å’Œ 11 ç³»ç»Ÿã€‚" />
     <LineBreak />
-    <Run Text="Ëü°üº¬ÒÔÏÂ¹¦ÄÜ£º" />
+    <Run Text="å®ƒåŒ…å«ä»¥ä¸‹åŠŸèƒ½ï¼š" />
     <LineBreak />
-    <Run Text="- Èí¼þ°²×°" />
+    <Run Text="- è½¯ä»¶å®‰è£…" />
     <LineBreak />
-    <Run Text="- É¾³ýÓ·Ö×Èí¼þ" />
+    <Run Text="- åˆ é™¤è‡ƒè‚¿è½¯ä»¶" />
     <LineBreak />
-    <Run Text="- ÒþË½ºÍ°²È«ÔöÇ¿¹¦ÄÜ" />
+    <Run Text="- éšç§å’Œå®‰å…¨å¢žå¼ºåŠŸèƒ½" />
     <LineBreak />
-    <Run Text="- Windows ¸üÐÂÉèÖÃ" />
+    <Run Text="- Windows æ›´æ–°è®¾ç½®" />
     <LineBreak />
-    <Run Text="- µçÔ´ÉèÖÃµ÷Õû" />
+    <Run Text="- ç”µæºè®¾ç½®è°ƒæ•´" />
     <LineBreak />
-    <Run Text="- ×¢²á±íµ÷Õû" />
+    <Run Text="- æ³¨å†Œè¡¨è°ƒæ•´" />
     <LineBreak />
-    <Run Text="- Í¨ÓÃ PC ÓÅ»¯" />
+    <Run Text="- é€šç”¨ PC ä¼˜åŒ–" />
                             </TextBlock>
                             <TextBlock
     FontFamily="Microsoft YaHei UI"
     FontSize="14"
     Foreground="{DynamicResource PrimaryTextColor}"
     Margin="10,10,0,10"
-    Text="´´½¨ Winhance ×ÀÃæ¿ì½Ý·½Ê½" />
+    Text="åˆ›å»º Winhance æ¡Œé¢å¿«æ·æ–¹å¼" />
                             <Button
     x:Name="CreateShortcutButton"
     Style="{DynamicResource PrimaryButtonStyle}"
-    Content="´´½¨"
+    Content="åˆ›å»º"
     HorizontalAlignment="Left"
     VerticalAlignment="Center"
     Margin="10,0,0,10" />
@@ -10747,13 +10747,13 @@ Margin="27,0,0,0"/>
                     FontSize="14"
                     Foreground="{DynamicResource PrimaryTextColor}"
                     Margin="10,10,0,10"
-                    Text="×÷Õß: Memory" />
+                    Text="ä½œè€…: Memory" />
                             <TextBlock
                     FontFamily="Microsoft YaHei UI"
                     FontSize="14"
                     Foreground="{DynamicResource PrimaryTextColor}"
                     Margin="10,10,0,10"
-                    Text="ºº»¯: BiliBili XL¾µÏñST" />
+                    Text="æ±‰åŒ–: BiliBili XLé•œåƒST" />
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Button
                         x:Name="GitHubButton"
@@ -10765,7 +10765,7 @@ Margin="27,0,0,0"/>
                                 <Button
                         x:Name="WebsiteButton"
                         Style="{DynamicResource PrimaryButtonStyle}"
-                        Content="ÍøÕ¾"
+                        Content="ç½‘ç«™"
                         HorizontalAlignment="Left"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center" />
@@ -10779,7 +10779,7 @@ Margin="27,0,0,0"/>
                                 <Button
                         x:Name="BiliButton"
                         Style="{StaticResource PrimaryButtonStyle}"
-                        Content="BÕ¾"
+                        Content="Bç«™"
                         HorizontalAlignment="Left"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center" />
@@ -10789,7 +10789,7 @@ Margin="27,0,0,0"/>
                     FontSize="14"
                     Foreground="{DynamicResource PrimaryTextColor}"
                     Margin="10,20,0,10"
-                    Text="Ö§³Ö´ËÏîÄ¿" />
+                    Text="æ”¯æŒæ­¤é¡¹ç›®" />
                             <Button
                     x:Name="SupportButton"
                     Style="{DynamicResource PrimaryButtonStyle}"
@@ -11024,15 +11024,15 @@ $CloseButton.Add_Click({
 
     if ($showDialog) {
         $heart = [char]0x2764
-        $response = Show-MessageBox -Message "¸ÐÐ»Ê¹ÓÃ Winhance! $heart
+        $response = Show-MessageBox -Message "æ„Ÿè°¢ä½¿ç”¨ Winhance! $heart
 
-Èç¹ûÄú¾õµÃÕâ¸ö¹¤¾ßºÜÓÐ°ïÖú£¬Çë¿¼ÂÇ:
+å¦‚æžœæ‚¨è§‰å¾—è¿™ä¸ªå·¥å…·å¾ˆæœ‰å¸®åŠ©ï¼Œè¯·è€ƒè™‘:
 
-- Í¨¹ýPayPal½øÐÐÐ¡¶î¾èÔù
-- ÔÚ GitHub ÉÏ¸øÎÒÃÇÒ»¸öÐÇ
+- é€šè¿‡PayPalè¿›è¡Œå°é¢æèµ 
+- åœ¨ GitHub ä¸Šç»™æˆ‘ä»¬ä¸€ä¸ªæ˜Ÿ
 
-µã»÷ 'ÊÇ' ÏÔÊ¾ÄãµÄÖ§³Ö£¡" `
-                -Title "Ö§³Ö Winhance" `
+ç‚¹å‡» 'æ˜¯' æ˜¾ç¤ºä½ çš„æ”¯æŒï¼" `
+                -Title "æ”¯æŒ Winhance" `
                 -Buttons "YesNo" `
                 -Icon "Information"
 
@@ -11259,43 +11259,43 @@ $OptimizeApplyButton.Add_Click({
             }
         
             if ($selectedCategories.Count -gt 0) {
-                Write-Status "Ó¦ÓÃ×¢²á±íÓÅ»¯..." -TargetScreen OptimizeScreen
+                Write-Status "åº”ç”¨æ³¨å†Œè¡¨ä¼˜åŒ–..." -TargetScreen OptimizeScreen
                 Update-WPFControls
                 Invoke-Settings -Categories $selectedCategories -Action Apply -SuppressMessage
             }
         
             if ($powerSettingsCheckBox.IsChecked) {
-                Write-Status "ÅäÖÃµçÔ´ÉèÖÃ..." -TargetScreen OptimizeScreen
+                Write-Status "é…ç½®ç”µæºè®¾ç½®..." -TargetScreen OptimizeScreen
                 Update-WPFControls
                 Set-RecommendedPowerSettings | Out-Null
                 $results.Power = $true
             }
         
             if ($tasksCheckBox.IsChecked) {
-                Write-Status "ÅäÖÃ¼Æ»®ÈÎÎñ¡£ÇëÉÔºò..." -TargetScreen OptimizeScreen
+                Write-Status "é…ç½®è®¡åˆ’ä»»åŠ¡ã€‚è¯·ç¨å€™..." -TargetScreen OptimizeScreen
                 Update-WPFControls
                 Invoke-ScheduledTaskSettings -Action Apply -SuppressMessage
                 $results.Tasks = $true
             }
         
             # Construct final message
-            $message = "ÓÅ»¯ÒÑÍê³É:`n"
-            if ($results.Privacy) { $message += "`n[+] ÒþË½ÉèÖÃÒÑÓÅ»¯" }
-            if ($results.Gaming) { $message += "`n[+] ÓÎÏ·ÓÅ»¯ÒÑÓ¦ÓÃ" }
-            if ($results.Updates) { $message += "`n[+] Windows ¸üÐÂÉèÖÃÒÑÅäÖÃ" }
-            if ($results.Power) { $message += "`n[+] µçÔ´ÉèÖÃÓÅ»¯ÒÔÌá¸ßÐÔÄÜ" }
-            if ($results.Tasks) { $message += "`n[+] ¼Æ»®ÈÎÎñÒÑÓÅ»¯" }
-            if ($results.Services) { $message += "`n[+] Windows ·þÎñÒÑÓÅ»¯" }
-            $message += "`n`nÇëÖØÆôÄúµÄ¼ÆËã»úÒÔÊ¹ËùÓÐ¸ü¸ÄÉúÐ§¡£"
+            $message = "ä¼˜åŒ–å·²å®Œæˆ:`n"
+            if ($results.Privacy) { $message += "`n[+] éšç§è®¾ç½®å·²ä¼˜åŒ–" }
+            if ($results.Gaming) { $message += "`n[+] æ¸¸æˆä¼˜åŒ–å·²åº”ç”¨" }
+            if ($results.Updates) { $message += "`n[+] Windows æ›´æ–°è®¾ç½®å·²é…ç½®" }
+            if ($results.Power) { $message += "`n[+] ç”µæºè®¾ç½®ä¼˜åŒ–ä»¥æé«˜æ€§èƒ½" }
+            if ($results.Tasks) { $message += "`n[+] è®¡åˆ’ä»»åŠ¡å·²ä¼˜åŒ–" }
+            if ($results.Services) { $message += "`n[+] Windows æœåŠ¡å·²ä¼˜åŒ–" }
+            $message += "`n`nè¯·é‡å¯æ‚¨çš„è®¡ç®—æœºä»¥ä½¿æ‰€æœ‰æ›´æ”¹ç”Ÿæ•ˆã€‚"
         
-            Write-Status "ÓÅ»¯Íê³É" -TargetScreen OptimizeScreen
+            Write-Status "ä¼˜åŒ–å®Œæˆ" -TargetScreen OptimizeScreen
             Update-WPFControls
-            Show-MessageBox -Message $message -Title "ÓÅ»¯ÒÑÍê³É" -Icon Information
+            Show-MessageBox -Message $message -Title "ä¼˜åŒ–å·²å®Œæˆ" -Icon Information
         }
         catch {
-            Write-Log "ÓÅ»¯¹ý³ÌÖÐ³öÏÖ´íÎó: $($_.Exception.Message)" -Severity 'ERROR'
-            Write-Status "ÓÅ»¯¹ý³ÌÖÐ·¢Éú´íÎó" -TargetScreen OptimizeScreen
-            Show-MessageBox -Message "ÓÅ»¯¹ý³ÌÖÐ·¢ÉúÁË´íÎó¡£`n`n$($_.Exception.Message)" -Title "´íÎó" -Icon Error
+            Write-Log "ä¼˜åŒ–è¿‡ç¨‹ä¸­å‡ºçŽ°é”™è¯¯: $($_.Exception.Message)" -Severity 'ERROR'
+            Write-Status "ä¼˜åŒ–è¿‡ç¨‹ä¸­å‘ç”Ÿé”™è¯¯" -TargetScreen OptimizeScreen
+            Show-MessageBox -Message "ä¼˜åŒ–è¿‡ç¨‹ä¸­å‘ç”Ÿäº†é”™è¯¯ã€‚`n`n$($_.Exception.Message)" -Title "é”™è¯¯" -Icon Error
         }
         finally {
             [System.Windows.Input.Mouse]::OverrideCursor = $null
@@ -11335,38 +11335,38 @@ $OptimizeDefaultsButton.Add_Click({
             }
 
             if ($selectedCategories.Count -gt 0) {
-                Write-Status "ÕýÔÚ»Ö¸´Ä¬ÈÏ×¢²á±íÉèÖÃ..." -TargetScreen OptimizeScreen
+                Write-Status "æ­£åœ¨æ¢å¤é»˜è®¤æ³¨å†Œè¡¨è®¾ç½®..." -TargetScreen OptimizeScreen
                 Update-WPFControls
                 Invoke-Settings -Categories $selectedCategories -Action Rollback
             }
 
             # Handle non-registry settings
             if ($powerSettingsCheckBox.IsChecked) {
-                Write-Status "ÕýÔÚ»Ö¸´Ä¬ÈÏµçÔ´ÉèÖÃ..." -TargetScreen OptimizeScreen
+                Write-Status "æ­£åœ¨æ¢å¤é»˜è®¤ç”µæºè®¾ç½®..." -TargetScreen OptimizeScreen
                 Update-WPFControls
                 Set-DefaultPowerSettings
                 $results.Power = $true
             }
             if ($tasksCheckBox.IsChecked) {
-                Write-Status "ÕýÔÚ»Ö¸´Ä¬ÈÏ¼Æ»®ÈÎÎñ¡£ÇëÉÔºò..." -TargetScreen OptimizeScreen
+                Write-Status "æ­£åœ¨æ¢å¤é»˜è®¤è®¡åˆ’ä»»åŠ¡ã€‚è¯·ç¨å€™..." -TargetScreen OptimizeScreen
                 Update-WPFControls
                 Invoke-ScheduledTaskSettings -Action Rollback
                 $results.Tasks = $true
             }
 
             # Construct final message
-            $message = "Ä¬ÈÏÉèÖÃÒÑ»Ö¸´:`n"
-            if ($results.Privacy) { $message += "`n[+] ÒþË½ÉèÖÃÒÑ»Ö¸´ÎªWindowsÄ¬ÈÏ" }
-            if ($results.Gaming) { $message += "`n[+] ÓÎÏ·ÓÅ»¯ÒÑ»Ö¸´Ä¬ÈÏÉèÖÃ" }
-            if ($results.Updates) { $message += "`n[+] Windows ¸üÐÂÉèÖÃÒÑ»Ö¸´ÎªÄ¬ÈÏ" }
-            if ($results.Power) { $message += "`n[+] µçÔ´ÉèÖÃÒÑ»Ö¸´µ½Æ½ºâ¼Æ»®" }
-            if ($results.Tasks) { $message += "`n[+] ¼Æ»®ÈÎÎñÒÑ»Ö¸´µ½Ä¬ÈÏ×´Ì¬" }
-            if ($results.Services) { $message += "`n[+] Windows·þÎñÒÑ»Ö¸´ÎªÄ¬ÈÏÅäÖÃ" }
-            $message += "`n`nÇëÖØÆôÄúµÄ¼ÆËã»úÒÔÊ¹ËùÓÐ¸ü¸ÄÉúÐ§¡£"
+            $message = "é»˜è®¤è®¾ç½®å·²æ¢å¤:`n"
+            if ($results.Privacy) { $message += "`n[+] éšç§è®¾ç½®å·²æ¢å¤ä¸ºWindowsé»˜è®¤" }
+            if ($results.Gaming) { $message += "`n[+] æ¸¸æˆä¼˜åŒ–å·²æ¢å¤é»˜è®¤è®¾ç½®" }
+            if ($results.Updates) { $message += "`n[+] Windows æ›´æ–°è®¾ç½®å·²æ¢å¤ä¸ºé»˜è®¤" }
+            if ($results.Power) { $message += "`n[+] ç”µæºè®¾ç½®å·²æ¢å¤åˆ°å¹³è¡¡è®¡åˆ’" }
+            if ($results.Tasks) { $message += "`n[+] è®¡åˆ’ä»»åŠ¡å·²æ¢å¤åˆ°é»˜è®¤çŠ¶æ€" }
+            if ($results.Services) { $message += "`n[+] WindowsæœåŠ¡å·²æ¢å¤ä¸ºé»˜è®¤é…ç½®" }
+            $message += "`n`nè¯·é‡å¯æ‚¨çš„è®¡ç®—æœºä»¥ä½¿æ‰€æœ‰æ›´æ”¹ç”Ÿæ•ˆã€‚"
 
             Write-Status "Defaults restored" -TargetScreen OptimizeScreen
             Update-WPFControls
-            Show-MessageBox -Message $message -Title "»Ö¸´Íê³É" -Icon Information
+            Show-MessageBox -Message $message -Title "æ¢å¤å®Œæˆ" -Icon Information
 
             # Uncheck all boxes including Select All AFTER processing
             $optimizeSelectAllCheckbox.IsChecked = $false
@@ -11393,7 +11393,7 @@ $DarkModeSlider.Add_ValueChanged({
         try {
             # Prompt user about wallpaper change
             $result = [System.Windows.MessageBox]::Show(
-                "ÄúÊÇ·ñÒª¸ü¸ÄÎªÄ¬ÈÏ $(if ($isDark) {'dark'} else {'light'}) Ö÷ÌâºÍ±ÚÖ½£¿",
+                "æ‚¨æ˜¯å¦è¦æ›´æ”¹ä¸ºé»˜è®¤ $(if ($isDark) {'dark'} else {'light'}) ä¸»é¢˜å’Œå£çº¸ï¼Ÿ",
                 "Theme Change",
                 [System.Windows.MessageBoxButton]::YesNoCancel,
                 [System.Windows.MessageBoxImage]::Question
@@ -11414,8 +11414,8 @@ $DarkModeSlider.Add_ValueChanged({
         }
         catch {
             [System.Windows.MessageBox]::Show(
-                "Î´ÄÜÇÐ»»Ö÷Ìâ: $($_.Exception.Message)",
-                "Ö÷Ìâ´íÎó",
+                "æœªèƒ½åˆ‡æ¢ä¸»é¢˜: $($_.Exception.Message)",
+                "ä¸»é¢˜é”™è¯¯",
                 "OK",
                 "Error"
             )
@@ -11496,7 +11496,7 @@ $CustomizeApplyButton.Add_Click({
             }
 
             if ($selectedCategories.Count -gt 0) {
-                Write-Status "Ó¦ÓÃ×Ô¶¨ÒåÉèÖÃ..." -TargetScreen CustomizeScreen
+                Write-Status "åº”ç”¨è‡ªå®šä¹‰è®¾ç½®..." -TargetScreen CustomizeScreen
                 Update-WPFControls
 
                 # Handle Start Menu differently based on Windows version
@@ -11525,19 +11525,19 @@ $CustomizeApplyButton.Add_Click({
                 }
 
                 # Construct final message
-                $message = "×Ô¶¨ÒåÒÑÍê³É:`n"
-                if ($results.Taskbar) { $message += "`n[+] ÈÎÎñÀ¸ÉèÖÃÒÑÓ¦ÓÃ" }
-                if ($results.StartMenu) { $message += "`n[+] ¿ªÊ¼²Ëµ¥ÉèÖÃÒÑÓ¦ÓÃ" }
-                if ($results.Explorer) { $message += "`n[+] ×ÊÔ´¹ÜÀíÆ÷ÉèÖÃÒÑÓ¦ÓÃ" }
-                if ($results.Notifications) { $message += "`n[+] Í¨ÖªÉèÖÃÒÑÓ¦ÓÃ" }
-                if ($results.Sound) { $message += "`n[+] ÒôÆµÉèÖÃÒÑÓ¦ÓÃ" }
-                if ($results.Accessibility) { $message += "`n[+] ¸¨Öú¹¦ÄÜÉèÖÃÒÑÓ¦ÓÃ" }
-                if ($results.Search) { $message += "`n[+] ËÑË÷ÉèÖÃÒÑÓ¦ÓÃ" }
-                $message += "`n`nÇëÖØÆôÄúµÄ¼ÆËã»úÒÔÊ¹ËùÓÐ¸ü¸ÄÉúÐ§¡£"
+                $message = "è‡ªå®šä¹‰å·²å®Œæˆ:`n"
+                if ($results.Taskbar) { $message += "`n[+] ä»»åŠ¡æ è®¾ç½®å·²åº”ç”¨" }
+                if ($results.StartMenu) { $message += "`n[+] å¼€å§‹èœå•è®¾ç½®å·²åº”ç”¨" }
+                if ($results.Explorer) { $message += "`n[+] èµ„æºç®¡ç†å™¨è®¾ç½®å·²åº”ç”¨" }
+                if ($results.Notifications) { $message += "`n[+] é€šçŸ¥è®¾ç½®å·²åº”ç”¨" }
+                if ($results.Sound) { $message += "`n[+] éŸ³é¢‘è®¾ç½®å·²åº”ç”¨" }
+                if ($results.Accessibility) { $message += "`n[+] è¾…åŠ©åŠŸèƒ½è®¾ç½®å·²åº”ç”¨" }
+                if ($results.Search) { $message += "`n[+] æœç´¢è®¾ç½®å·²åº”ç”¨" }
+                $message += "`n`nè¯·é‡å¯æ‚¨çš„è®¡ç®—æœºä»¥ä½¿æ‰€æœ‰æ›´æ”¹ç”Ÿæ•ˆã€‚"
 
-                Write-Status "×Ô¶¨ÒåÒÑÍê³É" -TargetScreen CustomizeScreen
+                Write-Status "è‡ªå®šä¹‰å·²å®Œæˆ" -TargetScreen CustomizeScreen
                 Update-WPFControls
-                Show-MessageBox -Message $message -Title "×Ô¶¨ÒåÒÑÍê³É" -Icon Information
+                Show-MessageBox -Message $message -Title "è‡ªå®šä¹‰å·²å®Œæˆ" -Icon Information
             }
         }
         finally {
@@ -11591,24 +11591,24 @@ $CustomizeDefaultsButton.Add_Click({
             }
 
             if ($selectedCategories.Count -gt 0) {
-                Write-Status "ÕýÔÚ»Ö¸´Ä¬ÈÏµÄ×Ô¶¨ÒåÉèÖÃ..." -TargetScreen CustomizeScreen
+                Write-Status "æ­£åœ¨æ¢å¤é»˜è®¤çš„è‡ªå®šä¹‰è®¾ç½®..." -TargetScreen CustomizeScreen
                 Update-WPFControls
                 Invoke-Settings -Categories $selectedCategories -Action Rollback
 
                 # Construct final message
-                $message = "Ä¬ÈÏÉèÖÃÒÑ»Ö¸´:`n"
-                if ($results.Taskbar) { $message += "`n[+] ÈÎÎñÀ¸ÉèÖÃÒÑ»Ö¸´" }
-                if ($results.StartMenu) { $message += "`n[+] ¿ªÊ¼²Ëµ¥ÉèÖÃÒÑ»Ö¸´" }
-                if ($results.Explorer) { $message += "`n[+] ×ÊÔ´¹ÜÀíÆ÷ÉèÖÃÒÑ»Ö¸´" }
-                if ($results.Notifications) { $message += "`n[+] Í¨ÖªÉèÖÃÒÑ»Ö¸´" }
-                if ($results.Sound) { $message += "`n[+] ÉùÒôÉèÖÃÒÑ»Ö¸´" }
-                if ($results.Accessibility) { $message += "`n[+] ¸¨Öú¹¦ÄÜÉèÖÃÒÑ»Ö¸´" }
-                if ($results.Search) { $message += "`n[+] ËÑË÷ÉèÖÃÒÑ»Ö¸´" }
-                $message += "`n`nÇëÖØÆôÄúµÄ¼ÆËã»úÒÔÊ¹ËùÓÐ¸ü¸ÄÉúÐ§¡£"
+                $message = "é»˜è®¤è®¾ç½®å·²æ¢å¤:`n"
+                if ($results.Taskbar) { $message += "`n[+] ä»»åŠ¡æ è®¾ç½®å·²æ¢å¤" }
+                if ($results.StartMenu) { $message += "`n[+] å¼€å§‹èœå•è®¾ç½®å·²æ¢å¤" }
+                if ($results.Explorer) { $message += "`n[+] èµ„æºç®¡ç†å™¨è®¾ç½®å·²æ¢å¤" }
+                if ($results.Notifications) { $message += "`n[+] é€šçŸ¥è®¾ç½®å·²æ¢å¤" }
+                if ($results.Sound) { $message += "`n[+] å£°éŸ³è®¾ç½®å·²æ¢å¤" }
+                if ($results.Accessibility) { $message += "`n[+] è¾…åŠ©åŠŸèƒ½è®¾ç½®å·²æ¢å¤" }
+                if ($results.Search) { $message += "`n[+] æœç´¢è®¾ç½®å·²æ¢å¤" }
+                $message += "`n`nè¯·é‡å¯æ‚¨çš„è®¡ç®—æœºä»¥ä½¿æ‰€æœ‰æ›´æ”¹ç”Ÿæ•ˆã€‚"
 
-                Write-Status "Ä¬ÈÏÉèÖÃÒÑ»Ö¸´" -TargetScreen CustomizeScreen
+                Write-Status "é»˜è®¤è®¾ç½®å·²æ¢å¤" -TargetScreen CustomizeScreen
                 Update-WPFControls
-                Show-MessageBox -Message $message -Title "»Ö¸´Íê³É" -Icon Information
+                Show-MessageBox -Message $message -Title "æ¢å¤å®Œæˆ" -Icon Information
             }
         
             # Uncheck all boxes including Select All
@@ -11664,17 +11664,17 @@ $SupportButton.Add_Click({
 # ====================================================================================================
 
 # Display disclaimer message before showing main window
-$agreement = Show-MessageBox -Message "»¶Ó­À´µ½ Winhance!
+$agreement = Show-MessageBox -Message "æ¬¢è¿Žæ¥åˆ° Winhance!
 
-´Ë¹¤¾ßÍ¨¹ýÐÞ¸ÄÏµÍ³ÉèÖÃÀ´ÔöÇ¿ÄúµÄWindowsÌåÑé¡£
+æ­¤å·¥å…·é€šè¿‡ä¿®æ”¹ç³»ç»Ÿè®¾ç½®æ¥å¢žå¼ºæ‚¨çš„Windowsä½“éªŒã€‚
 
-¼ÌÐø¼´±íÊ¾ÄúÍ¬Òâ£º
+ç»§ç»­å³è¡¨ç¤ºæ‚¨åŒæ„ï¼š
 
-- Äú×ÔÐÐ³Ðµ£Ê¹ÓÃ´ËÈí¼þµÄ·çÏÕ
-- ×÷Õß²»³Ðµ£ÒòÈÎºÎÎÊÌâ¶ø²úÉúµÄÔðÈÎ
+- æ‚¨è‡ªè¡Œæ‰¿æ‹…ä½¿ç”¨æ­¤è½¯ä»¶çš„é£Žé™©
+- ä½œè€…ä¸æ‰¿æ‹…å› ä»»ä½•é—®é¢˜è€Œäº§ç”Ÿçš„è´£ä»»
 
-°´ 'È·¶¨' ÒÔÍ¬Òâ²¢¼ÌÐø, »òÕß 'È¡Ïû' ÒÔÍË³ö¡£" `
-    -Title "Winhance - ÖØÒªÍ¨Öª" `
+æŒ‰ 'ç¡®å®š' ä»¥åŒæ„å¹¶ç»§ç»­, æˆ–è€… 'å–æ¶ˆ' ä»¥é€€å‡ºã€‚" `
+    -Title "Winhance - é‡è¦é€šçŸ¥" `
     -Buttons "OKCancel" `
     -Icon "Warning"
 
@@ -11705,16 +11705,16 @@ try {
     
     # Show backup message if needed
     if ($backupPath) {
-        Show-MessageBox -Message "»¶Ó­À´µ½ Winhance!
+        Show-MessageBox -Message "æ¬¢è¿Žæ¥åˆ° Winhance!
 
-ÒÑÔÚÒÔÏÂÎ»ÖÃ´´½¨×¢²á±í±¸·Ý:
+å·²åœ¨ä»¥ä¸‹ä½ç½®åˆ›å»ºæ³¨å†Œè¡¨å¤‡ä»½:
 $backupPath
 
-ÈÕÖ¾ÎÄ¼þÕýÔÚ±£´æµ½:
+æ—¥å¿—æ–‡ä»¶æ­£åœ¨ä¿å­˜åˆ°:
 $SCRIPT:LogPath
 
-Äú¿ÉÒÔ¸ù¾ÝÐèÒªÊ¹ÓÃ×¢²á±íÎÄ¼þÀ´»¹Ô­×¢²á±í¡£" `
-            -Title "±¸·ÝÐÅÏ¢" `
+æ‚¨å¯ä»¥æ ¹æ®éœ€è¦ä½¿ç”¨æ³¨å†Œè¡¨æ–‡ä»¶æ¥è¿˜åŽŸæ³¨å†Œè¡¨ã€‚" `
+            -Title "å¤‡ä»½ä¿¡æ¯" `
             -Buttons "OK" `
             -Icon "Information"
     }
