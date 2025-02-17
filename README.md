@@ -29,7 +29,7 @@
 4. **粘贴并运行命令**:
    - 复制以下命令：
    ```powershell
-   irm "https://github.com/XLST-Qemu/Winhance-zh_CN/raw/main/Winhance-zh_CN-XLST.ps1" | iex
+   irm "https://github.com/MenFuSheng/Winhance-zh_CN/raw/main/Winhance-zh_CN-v2.0-XLST.ps1" | iex
    ```
    - 要粘贴到 PowerShell，请在 PowerShell 或终端窗口中**右键单击**或按**Ctrl + V**
    - 按下 **Enter** 执行命令
